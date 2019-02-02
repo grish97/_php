@@ -1,0 +1,10 @@
+{
+    "name": "grish/php_traning",
+    "authors": [
+        {
+            "name": "Grish Vasilyan",
+            "email": "edg.ar.2001@mail.ru"
+        }
+    ],
+    "require": {}
+}
