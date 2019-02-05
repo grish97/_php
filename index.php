@@ -1,6 +1,6 @@
 <?php
 
-use app\controller\ControllerIndex;
+use config\Router;
 
 define('BASE_PATH',dirname(__FILE__ ));
 
@@ -14,8 +14,5 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
-$a = new ControllerIndex();
-$a->asda();
+$router = new Router();
 
-
-require_once('views/layout/index.php');
