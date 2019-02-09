@@ -1,9 +1,9 @@
 <?php
-namespace app;
+namespace app\Controller;
 
 Class HomeController
 {
     public function index() {
-        dd('index');
+        echo view('home.index',"Home");
     }
 }
