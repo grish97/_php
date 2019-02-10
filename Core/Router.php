@@ -16,7 +16,6 @@ Class Router
     private function getURI()
     {
         $uri = $_SERVER['REQUEST_URI'];
-
         if(!empty($uri)) {
             return explode('/',$uri)[1];
         }
@@ -24,7 +23,6 @@ Class Router
 
     public function getRout() {
         $uri = $this->getURI();
-
         foreach ($this->routers as $uriPattern  => $path) {
 
             if ($uriPattern === $uri) {

@@ -8,4 +8,5 @@ return [
     //REGISTER
     "register"  => 'auth/register',
     "store"     => 'auth/store',
+    "verify"    => 'auth/verify'
 ];

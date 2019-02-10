@@ -3,7 +3,9 @@
 
 namespace app\Controller;
 
-use Models\User;
+use app\Models\Users;
+use Core\Mail\Mail;
+use Carbon\Carbon;
 
 class AuthController
 {
@@ -29,7 +31,44 @@ class AuthController
            redirect('register');
         }
 
+        $name = $_POST['name'];
+        $last_name = $_POST['last_name'];
+        $email = $_POST['email'];
+        $password = hash('sha256',$_POST['password']);
+        $_SESSION['verification_token'] = str_random(60);
 
+        Users::query()->create([
+            'name',
+            'last_name',
+            'email',
+            'password',
+            'verification_token'
+        ], [
+            $name,
+            $last_name,
+            $email,
+            $password,
+            $_SESSION['verification_token']
+        ]);
+
+        new Mail("example@gmail.com",'Verify Account','email.registerVerify');
+
+        redirect('login');
+    }
+
+    public function verify() {
+        $token = $_SESSION['verification_token'];
+
+        if(isset($token)) {
+            Users::query()->where('verification_token','=',$token)
+                ->update([
+                    'verification_token' => null,
+                    'email_verify_at' => Carbon::now()->toDateTimeString()
+                ]);
+            unset($token);
+        }
+
+        redirect('login');
     }
 
 

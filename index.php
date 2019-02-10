@@ -1,10 +1,5 @@
 <?php
 
-use Core\Router;
-use Core\View;
-use Core\ORM\ORMBase;
-use app\Models\User;
-
 define('BASE_PATH',dirname(__FILE__ ));
 
 require_once('vendor' . DIRECTORY_SEPARATOR . 'autoload.php');
@@ -17,8 +12,4 @@ spl_autoload_register(function ($class_name) {
     }
 });
 
-
-//$router = new Router();
-//$router->getRout();
-
-$orm = new User();
+getRoute();
