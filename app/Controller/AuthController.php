@@ -26,14 +26,15 @@ class AuthController
             redirect('login');
             return false;
         }
-
+        //https://www.w3schools.com/w3css/tryw3css_templates_social.htm#
         $email = $_POST['email'];
+        $password = hash('sha256',$_POST['password']);
 
         $user = Users::query()
                 ->where('email','=',"$email")
                 ->get()->first();
 
-        if (!empty($user)) {
+        if (!empty($user) && $user['password'] === $password) {
             //Auth SET COOKIE
             setcookie('auth_user_id',$user['id']);
             $_SESSION['userData'] = $user;

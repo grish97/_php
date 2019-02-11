@@ -23,17 +23,28 @@
                     <li class="nav-link">
                         <a href="/" class="nav-link">About</a>
                     </li>
-
                 </ul>
 
-                <ul class="navbar-nav ml-auto ">
-                    <li class="nav-link">
-                        <a href="register" class="nav-link"><?= auth() ? userData('email') : 'Register' ?></a>
+                <?php if(auth()) : ?>
+                <ul class='navbar-nav ml-auto'>
+                    <li class='nav-link'>
+                        <a href='#' class='nav-link'><?= userData('email')?></a>
                     </li>
-                    <li class="nav-link">
-                        <a href="login" class="nav-link"><?= auth() ? 'Logout' : 'Login' ?></a>
+                    <li class='nav-link'>
+                        <a href='logout' class='nav-link'>Logout</a>
                     </li>
-                </ul>
+               </ul>
+                <?php else : ?>
+                <ul class='navbar-nav ml-auto '>
+                    <li class='nav-link'>
+                        <a href='login' class='nav-link'>Login</a>
+                    </li>
+                    <li class='nav-link'>
+                        <a href='register' class='nav-link'>Register</a>
+                    </li>
+                 </ul>
+                <?php endif; ?>
+
             </nav>
         </section>
 
