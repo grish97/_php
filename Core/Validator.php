@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use app\Models\Users;
+
 class Validator
 {
     private $data;
@@ -42,14 +44,21 @@ class Validator
             case 'email':
                 $pattern = "/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/";
                 $match = preg_match($pattern,$_data[$field]);
-                if(!$match) $this->errorMessage($field,$rule);
+                if(!$match) {
+                    $this->errorMessage($field,$rule);print_r('email');
+                }
             break;
             case 'confirmed':
                 if ($_data[$field] !== $_data['conf_' . $field]) $this->errorMessage($field,$rule);
             break;
             case 'unique':
+                $parts = explode(',',$arg);
+                $table = $parts[0];
+                $column = $parts[1];
+                $email = Users::query()->where($column,'=',$_data[$field])->get()->first();
 
-                break;
+                if(!empty($email)) $this->errorMessage($field,$rule);
+            break;
             default;
         }
     }
@@ -65,10 +74,10 @@ class Validator
        ];
 
        $errorMsg = $message[$rule];
-       $this->addError($field,$errorMsg,$this->data[$field]);
+       $this->addError($field,$errorMsg);
     }
 
-    public function addError($field,$message,$fieldVal) {
+    public function addError($field,$message) {
         $_SESSION['errors'][$field] = $message;
     }
 

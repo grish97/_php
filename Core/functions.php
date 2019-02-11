@@ -49,6 +49,22 @@ function getOldVal($field) {
     return isset($_SESSION['values'][$field]) ? $_SESSION['values'][$field] : '';
 }
 
+function email() {
+    if(isset($_SESSION['notFound'])) {
+        return $_SESSION['notFound'];
+    }
+}
+
+function auth() {
+    if(isset($_COOKIE['auth_user_id'])) {
+        return true;
+    }
+}
+
+function userData ($data) {
+    return $_SESSION['userData']["$data"];
+}
+
 function str_random ($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);

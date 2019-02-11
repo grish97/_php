@@ -11,9 +11,11 @@ class ORMBase
     private $where = '';
     private $select = '*';
     private $table;
+    private $data;
 
     public function __construct($table) {
         $this->table = $table;
+
         $dbConfig = base_path('Core/db');
         require_once "$dbConfig";
         $this->pdo = new PDO(driver . ":host=" . host . ';dbname=' . db_name . ';charset=' . charset, user_name,password);
@@ -21,7 +23,8 @@ class ORMBase
 
     public function get() {
         $sql = 'SELECT ' . $this->select . ' FROM ' . $this->table . $this->where;
-        return $this->executeStatment($sql);
+        $this->data = $this->executeStatment($sql);
+        return $this;
     }
 
     public function create (array $columns, array $values) {
@@ -68,6 +71,10 @@ class ORMBase
         } catch (Exception $e) {
             dd($e);
         }
+    }
+
+    public function first() {
+        return isset($this->data[0]) ? $this->data[0] : $this->data;
     }
 
     public function getTableName() {

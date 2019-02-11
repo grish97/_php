@@ -11,6 +11,40 @@ class AuthController
 {
     public function login() {
         echo view('auth.login',"Login");
+        unset($_SESSION['errors']);
+        unset($_SESSION['notFound']);
+        unset($_SESSION['values']);
+    }
+
+    public function sign_in() {
+        validate($_POST,[
+            'email' => 'required|email|min:6|max:26',
+            'password' => 'required|min:3|max:30'
+        ]);
+
+        if(isset($_SESSION['errors'])) {
+            redirect('login');
+            return false;
+        }
+
+        $email = $_POST['email'];
+
+        $user = Users::query()
+                ->where('email','=',"$email")
+                ->get()->first();
+
+        if (!empty($user)) {
+            //Auth SET COOKIE
+            setcookie('auth_user_id',$user['id']);
+            $_SESSION['userData'] = $user;
+            redirect('/');
+        }elseif(empty($user)) {
+            //EMAIL ADDRESS DOES NOT EXIST
+            $_SESSION['notFound'] = 'Address does not exist!';
+            redirect('login');
+        }else {
+            redirect('login');
+        }
     }
 
     public function register() {
@@ -29,6 +63,7 @@ class AuthController
 
         if (!empty($_SESSION['errors'])) {
            redirect('register');
+           return false;
         }
 
         $name = $_POST['name'];
@@ -51,21 +86,21 @@ class AuthController
             $_SESSION['verification_token']
         ]);
 
+        //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify');
-
-        redirect('login');
+        //VERIFY VIEW
+        echo view('email.verify','Verify');
     }
 
     public function verify() {
-        $token = $_SESSION['verification_token'];
-
-        if(isset($token)) {
+        if(isset($_SESSION['verification_token'])) {
+            $token = $_SESSION['verification_token'];
             Users::query()->where('verification_token','=',$token)
                 ->update([
-                    'verification_token' => null,
-                    'email_verify_at' => Carbon::now()->toDateTimeString()
+                    'email_verified_at' => Carbon::now()->toDateTimeString(),
+                    'verification_token' => null
                 ]);
-            unset($token);
+            unset($_SESSION['verification_token']);
         }
 
         redirect('login');

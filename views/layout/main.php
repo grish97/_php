@@ -26,12 +26,12 @@
 
                 </ul>
 
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto ">
                     <li class="nav-link">
-                        <a href="login" class="nav-link">Login</a>
+                        <a href="register" class="nav-link"><?= auth() ? userData('email') : 'Register' ?></a>
                     </li>
                     <li class="nav-link">
-                        <a href="register" class="nav-link">Register</a>
+                        <a href="login" class="nav-link"><?= auth() ? 'Logout' : 'Login' ?></a>
                     </li>
                 </ul>
             </nav>
