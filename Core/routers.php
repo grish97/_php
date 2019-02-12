@@ -3,6 +3,7 @@
 return [
     //HOME PAGE
     ""         => 'home/index',
+    "profile"   => 'home/profile',
     //LOGOUT
     'logout'    => 'home/logout',
     //LOGIN
@@ -12,5 +13,8 @@ return [
     //REGISTER
     "register"  => 'auth/register',
     "store"     => 'auth/store',
-    "verify"    => 'auth/verify'
+    "verify"    => 'auth/verify',
+    //POST CRUD
+    "create-product" => 'product/create',
+    "store-product" =>  'product/store'
 ];

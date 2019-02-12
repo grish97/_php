@@ -8,3 +8,13 @@ CREATE TABLE users (
   verification_token varchar(250),
   created_at timestamp
 );
+
+CREATE TABLE products (
+  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  name varchar(60) NOT NULL,
+  description TEXT  NOT NULL,
+  price int(11) NOT NULL,
+  image_name varchar(100) NOT NULL,
+  updated_at datetime,
+  created_at timestamp
+);

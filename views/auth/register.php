@@ -1,4 +1,4 @@
-<div class="col-5 mx-auto jumbotron">
+<div class="col-3 mx-auto jumbotron">
     <h3 class="mt-3 text-center mb-3">Sign Up</h3>
     <form method="post" action="store">
         <div class="form-group">

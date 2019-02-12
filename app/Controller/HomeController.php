@@ -7,6 +7,10 @@ Class HomeController
         echo view('home.index',"Home");
     }
 
+    public function profile() {
+        echo view('home.profile','MY Profile');
+    }
+
     public function logout() {
         unset($_COOKIE['auth_user_id']);
         unset($_SESSION['userDate']);

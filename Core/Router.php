@@ -1,7 +1,6 @@
 <?php
 
 namespace Core;
-use \app\Controller\AuthController;
 
 Class Router
 {

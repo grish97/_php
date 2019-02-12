@@ -1,0 +1,20 @@
+/*IMAGE STYLE FOR CREATE PRODUCT*/
+.inputFile {
+    overflow: hidden;
+    position: absolute;
+    outline:none;
+}
+/*
+.label_prod {
+    padding: 5px;
+    background: #466372;
+    border-radius: 3px;
+    color: #fff;
+    opacity:0.8;
+    cursor: pointer;
+}
+
+.label_prod:hover {
+    opacity:1;
+}
+/*IMAGE STYLE FOR CREATE PRODUCT END*/

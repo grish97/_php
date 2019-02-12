@@ -48,6 +48,9 @@ class Validator
                     $this->errorMessage($field,$rule);print_r('email');
                 }
             break;
+            case 'number' :
+                if(is_nan($_data[$field])) $this->errorMessage($field,$rule);
+            break;
             case 'confirmed':
                 if ($_data[$field] !== $_data['conf_' . $field]) $this->errorMessage($field,$rule);
             break;
@@ -70,7 +73,8 @@ class Validator
            'max'  => "This field value must be lower $arg",
            'email' => 'Email address is not valid',
            'unique' => 'This Email was registered',
-           'confirmed' => 'Please confirm password'
+           'confirmed' => 'Please confirm password',
+           'number' => "$field must be number"
        ];
 
        $errorMsg = $message[$rule];
