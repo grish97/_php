@@ -29,10 +29,13 @@ class ProductController
         $name = $_POST['name'];
         $desc = $_POST['desc'];
         $price = $_POST['price'];
-        $image_name = explode('.',$_POST['file'])[0];
         $creator_id = $_COOKIE['auth_user_id'];
+        if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
+            $image_name = implode(', ', $_FILES['file']['name']);
+        }
 
-        print_r($_FILES);exit;
+        $image_name = $image_name ? $image_name : null;
+
         Products::query()
                 ->insert([
                     'name',
@@ -47,7 +50,6 @@ class ProductController
                     $image_name,
                     $creator_id
                 ]);
-
     }
 
     public function edit() {
