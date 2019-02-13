@@ -88,3 +88,7 @@ function verify_token($action) {
         return false;
     }
 }
+
+function gog () {
+    echo 1;
+}

@@ -12,11 +12,12 @@ class Mail
     private $subject;
     private $message;
 
-    public  function __construct($to, $subject,$message) {
+    public  function __construct($to, $subject,$message,$token = '') {
         $this->mail = new PHPMailer(true);
         $this->to = $to;
         $this->subject = $subject;
         $this->message = $this->generateHtmlForMessage($message);
+        $this->token = $token;
         $this->_send();
     }
 
@@ -34,9 +35,10 @@ class Mail
             $this->mail->setFrom('600469d286-2dcedc@inbox.mailtrap.io', 'Mailer');
             $this->mail->addAddress("$this->to", 'User');
 
-            $this->mail->isHTML(true);
+//            $this->mail->isHTML(true);
             $this->mail->Subject = "$this->subject";
-            $this->mail->Body = "$this->message";
+            $this->mail->Body = "<p>Please verify your account <a href='http://mvc.loc/verify?token=".$this->token."'>Here</a></p>
+                                 <p>Or copy link <a href='http://mvc.loc/verify?token=".$this->token."'>'http://mvc.loc/verify?token='" . $this->token . "'</a></p>";
             $this->mail->AltBody = 'This is a Alt Body';
 
             $this->mail->send();
@@ -50,6 +52,7 @@ class Mail
 
     private function generateHtmlForMessage($message) {
         $path = views_path($message);
+
         return file_get_contents($path);
     }
 }

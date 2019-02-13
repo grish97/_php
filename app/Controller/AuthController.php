@@ -71,7 +71,7 @@ class AuthController
         $last_name = $_POST['last_name'];
         $email = $_POST['email'];
         $password = hash('sha256',$_POST['password']);
-        $_SESSION['verification_token'] = str_random(60);
+        $token = str_random(60);
 
         Users::query()->create([
             'name',
@@ -84,27 +84,27 @@ class AuthController
             $last_name,
             $email,
             $password,
-            $_SESSION['verification_token']
+            $token
         ]);
-
         //SEND VERIFY MAIL
-        new Mail("example@gmail.com",'Verify Account','email.registerVerify');
+        new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
         echo view('email.verify','Verify');
     }
 
-    public function verify() {
-        if(isset($_SESSION['verification_token'])) {
-            $token = $_SESSION['verification_token'];
-            Users::query()->where('verification_token','=',$token)
-                ->update([
-                    'email_verified_at' => Carbon::now()->toDateTimeString(),
-                    'verification_token' => null
-                ]);
-            unset($_SESSION['verification_token']);
-        }
-
-        redirect('login');
+    public function verify($token) {
+        print_r($token);
+//        if(isset($_SESSION['verification_token'])) {
+//            $token = $_SESSION['verification_token'];
+//            Users::query()->where('verification_token','=',$token)
+//                ->update([
+//                    'email_verified_at' => Carbon::now()->toDateTimeString(),
+//                    'verification_token' => null
+//                ]);
+//            unset($_SESSION['verification_token']);
+//        }
+//
+//        redirect('login');
     }
 
 

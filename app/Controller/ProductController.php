@@ -33,9 +33,7 @@ class ProductController
         if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
             $image_name = implode(', ', $_FILES['file']['name']);
         }
-
-        $image_name = $image_name ? $image_name : null;
-
+        exit;
         Products::query()
                 ->insert([
                     'name',
@@ -47,7 +45,7 @@ class ProductController
                     $name,
                     $desc,
                     $price,
-                    $image_name,
+
                     $creator_id
                 ]);
     }
@@ -60,7 +58,7 @@ class ProductController
 
     }
 
-    public function delete_post() {
+    public function delete() {
 
     }
 }

@@ -20,26 +20,30 @@ Class Router
         }
     }
 
-    public function getRout() {
+    public function getRout()
+    {
         $uri = $this->getURI();
-        foreach ($this->routers as $uriPattern  => $path) {
 
-            if ($uriPattern === $uri) {
-                $parts = explode('/', $path);
-                $controller = ucfirst($parts[0]) . "Controller";
+        foreach($this->routers as $key => $value) {
+            if ($uri === $key xor preg_match("/(?)/",$key)) {
+
+                $parts = explode('/',$value);
+                $controller = ucfirst($parts[0]) . 'Controller';
                 $action = $parts[1];
+//                $params = isset(array_keys($_GET)[1]) ?  array_values($_GET)[1] : '';
                 $controllerFile = app_path($controller);
 
-                if (file_exists($controllerFile)) {
+                if(file_exists($controllerFile)) {
                     $class_name = "\\app\\Controller\\{$controller}";
                     $object = new $class_name();
+//                    print_r($object->$action());
                     $result = $object->$action();
-                    if ($result !== null) {
-                        break;
-                    }
+                    if ($result !== null) break;
                 }
             }
-        }
-    }
 
+        }
+
+    }
 }
+

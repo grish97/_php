@@ -13,7 +13,7 @@ return [
     //REGISTER
     "register"  => 'auth/register',
     "store"     => 'auth/store',
-    "verify"    => 'auth/verify',
+    "verify?"    => 'auth/verify',
     //POST CRUD
     "create-product" => 'product/create',
     "store-product" =>  'product/store'
