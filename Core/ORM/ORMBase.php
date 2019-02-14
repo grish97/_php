@@ -61,7 +61,6 @@ class ORMBase
 
         $list = implode(' , ',$list);
         $sql = "UPDATE $this->table SET $list $this->where";
-        dd($sql);
         $this->executeStatment($sql);
     }
 
