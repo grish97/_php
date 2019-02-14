@@ -24,11 +24,20 @@
                     <div id="Demo1" class="w3-hide w3-container">
                         <p>Some text..</p>
                     </div>
-                    <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Posts</button>
+                    <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>Post</button>
                     <div id="Demo2" class="w3-hide w3-container">
-                        <p>Some other text..</p>
+                        <ul class="navbar-nav ml-3">
+                            <li class="nav-item">
+                                <a href="post?post=my" class="nav-link">My Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="post?post=all" class="nav-link">All Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="create-product" class="nav-link">Create Post</a>
+                            </li>
+                        </ul>
                     </div>
-                    <a href="create-product" onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fas fa-plus-square w3-margin-right"></i> Create Post</a>
                 </div>
             </div>
         </div>

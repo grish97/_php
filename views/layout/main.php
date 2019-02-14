@@ -41,7 +41,7 @@
         @content
         <!--END CONTENT -->
         <!--FOOTER-->
-        <footer class="w3-container w3-theme-d5">
+        <footer class="" id="footer">
             <p class="text-muted small text-center mt-3">All right reserved 2019</p>
         </footer>
         <!--SCRIPT-->

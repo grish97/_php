@@ -33,7 +33,7 @@ class ORMBase
     }
 
     public function where($columnName, $statment, $arg){
-        $this->where = ' where ' . ' ' . $columnName . ' ' . $statment . '"' . $arg .'"';
+        $this->where = ' WHERE ' . ' ' . $columnName . ' ' . $statment . '"' . $arg .'"';
         return $this;
     }
 
@@ -75,6 +75,10 @@ class ORMBase
 
     public function first() {
         return isset($this->data[0]) ? $this->data[0] : $this->data;
+    }
+
+    public function all() {
+        return $this->data;
     }
 
     public function getTableName() {

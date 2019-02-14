@@ -38,7 +38,7 @@ class AuthController
             //Auth SET COOKIE
             setcookie('auth_user_id',$user['id']);
             $_SESSION['userData'] = $user;
-            redirect('/');
+            redirect('profile');
         }elseif(empty($user)) {
             //EMAIL ADDRESS DOES NOT EXIST
             $_SESSION['notFound'] = 'Address does not exist!';
@@ -78,13 +78,13 @@ class AuthController
             'last_name',
             'email',
             'password',
-            'verification_token'
+            'verification_token',
         ], [
             $name,
             $last_name,
             $email,
             $password,
-            $token
+            $token,
         ]);
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
@@ -93,18 +93,19 @@ class AuthController
     }
 
     public function verify($token) {
-        print_r($token);
-//        if(isset($_SESSION['verification_token'])) {
-//            $token = $_SESSION['verification_token'];
-//            Users::query()->where('verification_token','=',$token)
-//                ->update([
-//                    'email_verified_at' => Carbon::now()->toDateTimeString(),
-//                    'verification_token' => null
-//                ]);
-//            unset($_SESSION['verification_token']);
-//        }
-//
-//        redirect('login');
+        $user_token = Users::query()->where('verification_token','=',$token)->get()->first();
+
+        if(!empty($user_token)) {
+            Users::query()->where('verification_token', '=', $token)
+                    ->update([
+                        'verification_token' => null,
+                        'email_verified_at' => Carbon::now()
+                    ]);
+           redirect('login');
+        }else {
+           echo "<h2 class='text-font-weight'>404 Page not found</h2>
+                  <a href='http://mvc.loc/' class='btn'>Home</a>";
+        }
     }
 
 

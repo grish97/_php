@@ -16,6 +16,11 @@ function getRoute () {
     $router->getRout();
 }
 
+function base_dir($path) {
+    $path = str_replace('/',DIRECTORY_SEPARATOR,$path);
+    return BASE_PATH . DIRECTORY_SEPARATOR . $path;
+}
+
 function base_path($path) {
     $path = str_replace('/',DIRECTORY_SEPARATOR,$path);
     return BASE_PATH . DIRECTORY_SEPARATOR . $path . '.php';
@@ -30,9 +35,9 @@ function views_path($path) {
     return BASE_PATH . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $path . ".php";
 }
 
-function view($page,$title = '') {
+function view($page,$title = '',$params = []) {
     $view = new Core\View();
-    return $view->render($page,$title);
+    return $view->render($page,$title,$params);
 }
 
 function validate($data,$rule) {
@@ -65,6 +70,15 @@ function userData ($data) {
     return $_SESSION['userData']["$data"];
 }
 
+function products() {
+    if(isset($_SESSION['products'])) return $_SESSION['products'];
+}
+
+function product_img($image) {
+    $images = explode(',',$image);
+    return $images[0];
+}
+
 function str_random ($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -87,8 +101,4 @@ function verify_token($action) {
     }else {
         return false;
     }
-}
-
-function gog () {
-    echo 1;
 }
