@@ -14,20 +14,18 @@ class ProductController
     public function index($role) {
         if ($role === 'my') {
             $creator_id = userData('id');
-            $products = Products::query()->where('creator_id', '=',$creator_id)
+            $product = Products::query()->where('creator_id', '=',$creator_id)
                 ->get()->all();
-//            $_SESSION['products'] = $my_products;
         }elseif ($role === 'all') {
-            $products = Products::query()->get()->all();
-//            $_SESSION['products'] = $all_products;
+            $product = Products::query()->get()->all();
         }
-        $products = Products::query()->get()->all();
-        if(empty($_SESSION['products'])) {
+
+        if(empty($product)) {
             echo '<h3>No Products</h3>';
             return false;
         }
 
-        echo view('product.index',"Post",['products' => $products]);
+        echo view('product.index',"Product",['product' => $product]);
     }
 
     public function create() {
@@ -91,7 +89,7 @@ class ProductController
         $product = Products::query()
                     ->where('id','=',$id)
                     ->get()->first();
-
+//        dd(image($product['image_name']));
         echo view('product.show','Product', ['product' => $product]);
     }
 

@@ -16,7 +16,7 @@ return [
     "verify?"    => 'auth/verify',
     //POST CRUD
     "create-product" => 'product/create',
-    "store-product" =>  'product/store',
-    'post?'          => 'product/index',
+    "store-product"  =>  'product/store',
+    'product?'       => 'product/index',
     'show?'          => 'product/show'
 ];

@@ -28,10 +28,10 @@
                     <div id="Demo2" class="w3-hide w3-container">
                         <ul class="navbar-nav ml-3">
                             <li class="nav-item">
-                                <a href="post?post=my" class="nav-link">My Post</a>
+                                <a href="product?product=my" class="nav-link">My Post</a>
                             </li>
                             <li class="nav-item">
-                                <a href="post?post=all" class="nav-link">All Post</a>
+                                <a href="product?product=all" class="nav-link">All Post</a>
                             </li>
                             <li class="nav-item">
                                 <a href="create-product" class="nav-link">Create Post</a>

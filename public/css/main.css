@@ -36,6 +36,11 @@
     color: #26363E;
 }
 
+.show_img {
+    width:300px;
+    height:250px;
+}
+
 /*FOR FOOTER*/
 #footer {
     position:fixed;

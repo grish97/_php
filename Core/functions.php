@@ -70,13 +70,18 @@ function userData ($data) {
     return $_SESSION['userData']["$data"];
 }
 
-function products() {
-    if(isset($_SESSION['products'])) return $_SESSION['products'];
+function image($image) {
+    if(!empty($image)) {
+        $images_arr = explode(',',$image);
+        return $images_arr;
+    }
+
+    return ['default.jpg'];
 }
 
-function product_img($image) {
-    $images = explode(',',$image);
-    return $images[0];
+function str_trim ($string) {
+    $string = str_replace(' ', '', $string);
+    return $string;
 }
 
 function str_random ($length) {
