@@ -7,8 +7,12 @@
                 <div class="card-body">
                     <h5 class="card-title"><?= $value['name'] ?></h5>
                     <p class="card-text"><?= $value['description'] ?></p>
-                    <p class="small text-muted"><?= $value['price'] . ' $'?></p>
+                    <p class="card-text">Price: <?= $value['price'] . ' $'?></p>
                     <p class="small text-muted">Added: <?= $value['created_at']?></p>
+
+                    <?php if(!empty($value['updated_at'])) : ?>
+                        <p class="small text-muted">Updated: <?= $value['updated_at']?></p>
+                    <?php endif ?>
                 </div>
             </div>
         <?php endforeach; ?>

@@ -64,6 +64,11 @@ class ORMBase
         $this->executeStatment($sql);
     }
 
+    public function delete() {
+        $sql = "DELETE FROM $this->table $this->where";
+        $this->executeStatment($sql);
+    }
+
     public function executeStatment($sql) {
         try {
             $result = $this->pdo->query($sql);

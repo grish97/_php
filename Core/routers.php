@@ -2,7 +2,7 @@
 
 return [
     //HOME PAGE
-    ""         => 'home/index',
+    ""          => 'home/index',
     "profile"   => 'home/profile',
     //LOGOUT
     'logout'    => 'home/logout',
@@ -13,10 +13,14 @@ return [
     //REGISTER
     "register"  => 'auth/register',
     "store"     => 'auth/store',
-    "verify?"    => 'auth/verify',
+    "verify?"   => 'auth/verify',
     //POST CRUD
     "create-product" => 'product/create',
-    "store-product"  =>  'product/store',
+    "store-product?" => 'product/store',
     'product?'       => 'product/index',
-    'show?'          => 'product/show'
+    'show?'          => 'product/show',
+    'delete?'        => 'product/delete',
+    'edit?'          => 'product/edit',
+    'update?'        => 'product/update',
+    'image'          => 'product/image'
 ];

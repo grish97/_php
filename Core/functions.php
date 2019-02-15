@@ -73,6 +73,7 @@ function userData ($data) {
 function image($image) {
     if(!empty($image)) {
         $images_arr = explode(',',$image);
+        $_FILES['file']['name'] = $images_arr;
         return $images_arr;
     }
 
