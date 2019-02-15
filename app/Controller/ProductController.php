@@ -34,7 +34,8 @@ class ProductController
         unset($_SESSION['values']);
     }
 
-    public function store($role) {
+    public function store() {
+        dd($_FILES['file']['name']);
         validate($_POST,[
             'name' => 'required|min:3|max:50',
             'desc' => 'required|min:3|max:1000',
@@ -42,7 +43,7 @@ class ProductController
         ]);
 
         if(isset($_SESSION['errors'])) {
-            redirect("$role-Product?store=$role");
+            redirect("store-Product");
             return false;
         }
 
@@ -66,7 +67,6 @@ class ProductController
 
         $image_name = isset($image) ? $image : 'default.jpg';
 
-        if($role === 'create') {
             Products::query()
                 ->insert([
                     'name',
@@ -81,18 +81,18 @@ class ProductController
                     $image_name,
                     $creator_id
                 ]);
-        }elseif ($role === 'edit') {
-            Products::query()
-                ->update([
-                    'name' => $name,
-                    'description' => $desc,
-                    'price' => $price,
-                    'image_name' => $image_name ,
-                    'updated_at' => Carbon::now()
-                ]);
-        }
 
-        redirect($_SERVER['QUERY_STRING']);
+//            Products::query()
+//                ->update([
+//                    'name' => $name,
+//                    'description' => $desc,
+//                    'price' => $price,
+//                    'image_name' => $image_name ,
+//                    'updated_at' => Carbon::now()
+//                ]);
+
+
+        redirect('profile');
     }
 
     public function edit($id) {

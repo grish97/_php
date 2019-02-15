@@ -7,7 +7,6 @@
         <div class="image">
         <?php foreach(image($product['image_name']) as $key => $value) : ?>
             <div class="store_img d-inline-block shadow mb-5 mr-3">
-                <a href="deleteImg?id=<?= $key ?>" class=""><i class="fas fa-times"></i></a>
                 <img src="<?= str_trim ('/public/storage/products/' . $value)?>" alt="Product Photo">
             </div>
         <?php endforeach; ?>

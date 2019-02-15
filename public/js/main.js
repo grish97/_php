@@ -1,28 +1,44 @@
 let image = {
-    imageArray : [],
+    files : [],
+    i : 0,
 
     read : (files) => {
-        $.each(files, (key, value) => {
-            let reader = new FileReader();
-                image.imageArray.push(reader.result);
-                image.viewImage(reader,value);
-
-        });
+        if (files) {
+            $.each(files, (key,value) => {
+                let reader = new FileReader();
+                image.files.push(value);
+                reader.onload = function () {
+                    image.viewImage(reader.result);
+                };
+                reader.readAsDataURL(value);
+            });
+        }
     },
 
-    viewImage : (reader,file) =>  {
-        reader.onload = function() {
-            image.imageArray.push(reader.result);
-        };
+    viewImage : (img) => {
+            imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.i++}">
+                            <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
+                            <img src="${img}" alt="Product Photo"> 
+                        </div>`;
+        $(`.file`).after(imgBlock);
+    },
 
-        reader.readAsDataURL(file);
-        console.log(image.imageArray);
+    deleteImage : (elem) =>  {
+        let elemId = elem.attr(`data-id`);
+        (image.files).splice(elemId,1);
+        elem.remove();
     }
+
 };
 
 let fileInput = document.getElementById('file');
 fileInput.addEventListener('change', function (event) {
     image.read(event.target.files);
+});
+
+$(document).on('click','.deleteImage', function ()  {
+    let elem = $(this).parent('.store_img');
+    image.deleteImage(elem);
 });
 
 $(document).on('click','.delete', function ()  {
