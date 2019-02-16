@@ -42,29 +42,31 @@ class ProductController
             'price' => 'required|number',
         ]);
 
-        if(isset($_SESSION['errors'])) {
-            redirect("store-Product");
-            return false;
-        }
-
+//        if(isset($_SESSION['errors'])) {
+//            redirect("store-Product");
+//            return false;
+//        }
         $name = $_POST['name'];
         $desc = $_POST['desc'];
         $price = $_POST['price'];
         $creator_id = $_COOKIE['auth_user_id'];
-
-        if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
-            $file = $_FILES['file'];
-            $file_name = $file['name'];
-            $tmp_name = $file['tmp_name'];
-            $destination = base_dir('public/storage/products');
-
-            for($i = 0; $i < count($tmp_name); $i++) {
-                move_uploaded_file($tmp_name[$i],"$destination/$file_name[$i]");
-            }
-
-            $image = implode(', ', $_FILES['file']['name']);
+//        if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
+//            $file = $_FILES['file'];
+//            $file_name = $file['name'];
+//            $tmp_name = $file['tmp_name'];
+//            $destination = base_dir('public/storage/products');
+//
+//            for($i = 0; $i < count($tmp_name); $i++) {
+//                move_uploaded_file($tmp_name[$i],"$destination/$file_name[$i]");
+//            }
+//
+//            $image = implode(', ', $_FILES['file']['name']);
+//        }
+        $image = $_POST['store_product_image'];
+        dd($image);
+        if(!empty($image)) {
         }
-
+        exit;
         $image_name = isset($image) ? $image : 'default.jpg';
 
             Products::query()

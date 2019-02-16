@@ -1,8 +1,8 @@
 <div class="col-6 mx-auto jumbotron">
     <h3 class="mt-3 text-center mb-3">Create Product</h3>
-    <form enctype="multipart/form-data" method="post" action="store-product">
+    <form method="post" enctype="multipart/form-data" class="form">
         <div class="mt-3 mb-4 file">
-            <input type="file" name="file[]" class="inputFile" id="file" multiple="multiple">
+            <input type="file" name="file[]" class="inputFile" id="file" multiple="multiple" accept="image/jpeg">
         </div>
         <div class="form-group">
             <label for="name">Product Name</label>

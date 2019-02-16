@@ -1,13 +1,14 @@
 let image = {
     files : [],
+    request : new XMLHttpRequest(),
     i : 0,
 
     read : (files) => {
         if (files) {
             $.each(files, (key,value) => {
                 let reader = new FileReader();
-                image.files.push(value);
-                reader.onload = function () {
+                reader.onload = function() {
+                    image.files.push(value);
                     image.viewImage(reader.result);
                 };
                 reader.readAsDataURL(value);
@@ -23,24 +24,57 @@ let image = {
         $(`.file`).after(imgBlock);
     },
 
+    uploadFile : (form) => {
+      let formData = new FormData(form);
+      $.each(image.files, (key,value) => {
+          formData.append('files[]',value);
+      });
+
+      image.request.open('post','store-product');
+      image.request.send(formData);
+
+    },
+
     deleteImage : (elem) =>  {
-        let elemId = elem.attr(`data-id`);
-        (image.files).splice(elemId,1);
+        let formData = new FormData($('.form')[0]);
+        console.log(formData);
+        // let elemId = elem.attr(`data-id`);
+        // (image.files).splice(elemId,1);
         elem.remove();
     }
 
 };
-
+//CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 fileInput.addEventListener('change', function (event) {
     image.read(event.target.files);
 });
+//FOR SUBMIT
+let form = document.querySelector('form');
+let request = new XMLHttpRequest();
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // image.uploadFile(e.target);
+    let files = document.querySelector('[type=file]').files;
+    let formData = new FormData(e.target);
 
+    for (let i =0; i < files.length;i++) {
+        let file = files[i];
+        formData.append('file',file);
+    }
+    for (let val of formData.values()) {
+        console.log(val);
+    }
+
+    request.open('post','store-product');
+    request.send(formData);
+});
+//DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
     let elem = $(this).parent('.store_img');
     image.deleteImage(elem);
 });
-
+//DELETE PRODUCT
 $(document).on('click','.delete', function ()  {
     let url = $(this).attr('data-action'),
         cond = confirm("Do you want to delete this product?");
