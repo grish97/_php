@@ -1,8 +1,8 @@
 <div class="col-6 mx-auto jumbotron">
     <h3 class="mt-3 text-center mb-3">Edit Product</h3>
-    <form enctype="multipart/form-data" method="post" action="update?id=<?= $product['id']?>">
-        <div class="mt-3 mb-4">
-            <input type="file" name="file[]" class="inputFile" multiple="multiple">
+    <form enctype="multipart/form-data" method="post" class="form">
+        <div class="mt-3 mb-4 file">
+            <input type="file" name="file[]" class="inputFile" multiple="multiple" id="file">
         </div>
         <div class="image">
         <?php foreach(image($product['image_name']) as $key => $value) : ?>

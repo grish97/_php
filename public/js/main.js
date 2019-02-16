@@ -1,14 +1,14 @@
 let image = {
     files : [],
-    request : new XMLHttpRequest(),
-    i : 0,
+    iterator : 0,
 
     read : (files) => {
+
         if (files) {
             $.each(files, (key,value) => {
+               image.files.push(value);
                 let reader = new FileReader();
                 reader.onload = function() {
-                    image.files.push(value);
                     image.viewImage(reader.result);
                 };
                 reader.readAsDataURL(value);
@@ -17,7 +17,7 @@ let image = {
     },
 
     viewImage : (img) => {
-            imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.i++}">
+            imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.iterator++}">
                             <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
                             <img src="${img}" alt="Product Photo"> 
                         </div>`;
@@ -25,49 +25,45 @@ let image = {
     },
 
     uploadFile : (form) => {
-      let formData = new FormData(form);
-      $.each(image.files, (key,value) => {
-          formData.append('files[]',value);
-      });
+        let formData = new FormData(form),
+            images = image.files.filter((el) => el);
 
-      image.request.open('post','store-product');
-      image.request.send(formData);
+        formData.delete('file[]');
+
+        $.each(images, (key,val) => {
+            formData.append('file[]',val);
+        });
+
+        $.ajax({
+            url : 'store-product',
+            data : formData,
+            type : 'POST',
+            contentType : false,
+            processData : false,
+        });
 
     },
 
     deleteImage : (elem) =>  {
-        let formData = new FormData($('.form')[0]);
-        console.log(formData);
-        // let elemId = elem.attr(`data-id`);
-        // (image.files).splice(elemId,1);
-        elem.remove();
+       let elemId = elem.attr('data-id'),
+           images = image.files;
+       delete images[elemId];
+       elem.remove();
+       if(!images.filter((el) => el).length) $(`[type=file]`).val('');
     }
 
 };
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
-fileInput.addEventListener('change', function (event) {
-    image.read(event.target.files);
-});
+if(fileInput) {
+    fileInput.addEventListener('change', function (event) {
+        image.read(event.target.files);
+    });
+}
 //FOR SUBMIT
-let form = document.querySelector('form');
-let request = new XMLHttpRequest();
-form.addEventListener('submit', function(e) {
+$(`.form`).on(`submit`,(e) => {
     e.preventDefault();
-    // image.uploadFile(e.target);
-    let files = document.querySelector('[type=file]').files;
-    let formData = new FormData(e.target);
-
-    for (let i =0; i < files.length;i++) {
-        let file = files[i];
-        formData.append('file',file);
-    }
-    for (let val of formData.values()) {
-        console.log(val);
-    }
-
-    request.open('post','store-product');
-    request.send(formData);
+    image.uploadFile($(e.target)[0]);
 });
 //DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
