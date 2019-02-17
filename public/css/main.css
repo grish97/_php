@@ -39,7 +39,7 @@ a:hover {
 
 .show_prod:hover {
     opacity:1;
-    color: #26363E;
+    color: aqua;
 }
 
 .show_img {
@@ -64,6 +64,17 @@ a:hover {
 .store_img {
     width:25%;
     height:150px;
+    margin-right:10px;
+}
+
+.store_img a {
+    cursor:pointer;
+    opacity:0.7;
+}
+
+.store_img a:hover {
+    color:red;
+    opacity:1;
 }
 
 .store_img img {

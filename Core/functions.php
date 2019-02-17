@@ -75,8 +75,6 @@ function image($image) {
         $images_arr = explode(',',$image);
         return $images_arr;
     }
-
-    return ['default.jpg'];
 }
 
 function str_trim ($string) {

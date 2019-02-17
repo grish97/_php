@@ -24,7 +24,7 @@ let image = {
         $(`.file`).after(imgBlock);
     },
 
-    uploadFile : (form) => {
+    uploadData : (form,params) => {
         let formData = new FormData(form),
             images = image.files.filter((el) => el);
 
@@ -35,13 +35,33 @@ let image = {
         });
 
         $.ajax({
-            url : 'store-product',
+            url : `store-product?store=${params}`,
             data : formData,
             type : 'POST',
+            success : (data) => {
+                data  = JSON.parse(data);
+
+                if(data['error']) {
+                    image.generateError(data['error']);
+                    return false;
+                }else if (data['warning']) {
+                    toastr.warning(data['warning']);
+                    return false;
+                }
+                window.location.href = 'http://mvc.loc/product?product=my';
+            },
             contentType : false,
             processData : false,
         });
 
+    },
+
+    generateError : (errors) => {
+        toastr.error('Fix Errors');
+        $.each(errors,(field,error) => {
+            let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
+            $(`#${field}`).after(errorBlock);
+        });
     },
 
     deleteImage : (elem) =>  {
@@ -58,12 +78,26 @@ let fileInput = document.getElementById('file');
 if(fileInput) {
     fileInput.addEventListener('change', function (event) {
         image.read(event.target.files);
+        // let file = new File([''],'default.jpg',{type: 'image/jpg'});
+        // let reader = new FileReader();
+        // reader.onload = function() {
+        //     console.log(reader.result);
+        // };
+        // reader.readAsDataURL(file);
     });
 }
+//DELETE ERROR BLOCK
+$(document).on('keyup','.form-control',(e) => {
+    let errorBlock = $(e.target).closest(`.form-group`).find(`.errorBlock`);
+    if(errorBlock) errorBlock.remove();
+});
 //FOR SUBMIT
 $(`.form`).on(`submit`,(e) => {
     e.preventDefault();
-    image.uploadFile($(e.target)[0]);
+    let errorBlock = $(`.errorBlock`);
+    if(errorBlock) errorBlock.remove();
+    let params = $(e.target).find(`button`).attr(`data-param`);
+    image.uploadData($(e.target)[0],params);
 });
 //DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
@@ -80,7 +114,7 @@ $(document).on('click','.delete', function ()  {
             url : url,
             async : false,
             success : () => {
-                window.location.href = 'http://mvc.loc/profile';
+                window.location.href = 'http://mvc.loc/product=my';
             },
             error : (err) => {
                 console.error(err);

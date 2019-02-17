@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/public/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        <link rel="stylesheet" href="/public/css/toastr.css">
         <link rel="stylesheet" href="/public/css/main.css">
         <style>
             html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
@@ -41,12 +42,13 @@
         @content
         <!--END CONTENT -->
         <!--FOOTER-->
-        <footer class="" id="footer">
+        <footer class="d-none" id="footer">
             <p class="text-muted small text-center mt-3">All right reserved 2019</p>
         </footer>
         <!--SCRIPT-->
         <script src="/public/js/access/jquery.min.js"></script>
         <script src="/public/js/access/bootstrap.min.js"></script>
+        <script src="/node_modules/toastr/toastr.js"></script>
         <script src="/public/js/main.js"></script>
     </body>
 </html>

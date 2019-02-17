@@ -49,7 +49,7 @@ class Validator
                 }
             break;
             case 'number' :
-                if(is_nan($_data[$field])) $this->errorMessage($field,$rule);
+                if(is_nan(isset($_data[$field]))) $this->errorMessage($field,$rule);
             break;
             case 'confirmed':
                 if ($_data[$field] !== $_data['conf_' . $field]) $this->errorMessage($field,$rule);

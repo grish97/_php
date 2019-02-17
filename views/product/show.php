@@ -3,7 +3,7 @@
             <div class="image_block d-inline-block">
                 <?php foreach (image($product['image_name']) as $image) : ?>
                     <div class="show_img d-inline-block shadow">
-                        <a href="" class="show_prod"><i class="fas fa-times"></i></a>
+<!--                        <a href="" class="show_prod"><i class="fas fa-times"></i></a>-->
                         <img src="<?= str_trim ('/public/storage/products/' . $image)?>" alt="Product Photo">
                     </div>
                 <?php endforeach; ?>

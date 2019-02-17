@@ -30,11 +30,14 @@ class ProductController
 
     public function create() {
         echo view('product.create','Create Product');
-        unset($_SESSION['errors']);
-        unset($_SESSION['values']);
     }
 
-    public function store() {
+    public function store($params) {
+        $parts = explode(':',$params);
+        $role = isset($parts[0]) ? $parts[0] : $params;
+        $id = isset($parts[1]) ? $parts[1] : '';
+        unset($_SESSION['errors']);
+
         validate($_POST,[
             'name' => 'required|min:3|max:50',
             'desc' => 'required|min:3|max:1000',
@@ -42,15 +45,16 @@ class ProductController
         ]);
 
         if(isset($_SESSION['errors'])) {
-            redirect("store-Product");
+            $data = $_SESSION['errors'];
+            echo json_encode(['error' => $data]);
             return false;
         }
 
         $name = $_POST['name'];
         $desc = $_POST['desc'];
         $price = $_POST['price'];
-        $creator_id = $_COOKIE['auth_user_id'];
-        if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
+
+        if(isset($_FILES['file']['tmp_name'][0])) {
             $file = $_FILES['file'];
             $file_name = $file['name'];
             $tmp_name = $file['tmp_name'];
@@ -63,9 +67,10 @@ class ProductController
             $image = implode(', ', $_FILES['file']['name']);
         }
 
-
         $image_name = isset($image) ? $image : 'default.jpg';
 
+        if ($role === 'create') {
+            $creator_id = $_COOKIE['auth_user_id'];
             Products::query()
                 ->insert([
                     'name',
@@ -80,20 +85,32 @@ class ProductController
                     $image_name,
                     $creator_id
                 ]);
+        }elseif ($role === 'edit') {
+            $product = Products::query()->where('id','=',$id)->get()->first();
 
-//            Products::query()
-//                ->update([
-//                    'name' => $name,
-//                    'description' => $desc,
-//                    'price' => $price,
-//                    'image_name' => $image_name ,
-//                    'updated_at' => Carbon::now()
-//                ]);
+            if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
+                Products::query()
+                    ->where('id','=',$id)
+                    ->update([
+                        'name' => $name,
+                        'description' => $desc,
+                        'price' => $price,
+                        'image_name' => $image_name ,
+                        'updated_at' => Carbon::now()
+                    ]);
+            }else {
+                echo json_encode(['warning' => 'Warning']);
+                return false;
+            }
+        }else {
+            echo json_encode(['warning' => 'Warning']);
+            return false;
+        }
 
+        echo json_encode(['message' => 'success']);
     }
 
     public function edit($id) {
-        unset($_SESSION['errors']);
         $product = Products::query()
                     ->where('id','=',$id)
                     ->get()->first();
@@ -112,50 +129,6 @@ class ProductController
 
         echo view('product.show','Product', ['product' => $product]);
     }
-
-//    public function update($id) {
-//        validate($_POST,[
-//            'name' => 'required|min:3|max:50',
-//            'desc' => 'required|min:3|max:1000',
-//            'price' => 'required|number',
-//        ]);
-//
-//        if(isset($_SESSION['errors'])) {
-//            redirect("edit?id=$id");
-//        }
-//
-//        $name = $_POST['name'];
-//        $desc = $_POST['desc'];
-//        $price = $_POST['price'];
-//        $creator_id = $_COOKIE['auth_user_id'];
-//
-//        if(is_uploaded_file($_FILES['file']['tmp_name'][0])) {
-//            $file = $_FILES['file'];
-//            $file_name = $file['name'];
-//            $tmp_name = $file['tmp_name'];
-//            $destination = base_dir('public/storage/products');
-//
-//            for($i = 0; $i < count($tmp_name); $i++) {
-//                move_uploaded_file($tmp_name[$i],"$destination/$file_name[$i]");
-//            }
-//
-//            $image = implode(', ', $_FILES['file']['name']);
-//        }
-//
-//        $image_name = isset($image) ? $image : null;
-//
-//
-//        Products::query()
-//            ->update([
-//                'name' => $name,
-//                'description' => $desc,
-//                'price' => $price,
-//                'image_name' => $image_name ,
-//                'updated_at' => Carbon::now()
-//            ]);
-//
-//        redirect('product?product=my');
-//    }
 
     public function delete($id) {
         $product = Products::query()

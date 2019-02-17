@@ -6,19 +6,16 @@
         </div>
         <div class="form-group">
             <label for="name">Product Name</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Name" value="<?= getOldVal('name')?>">
-            <span class="text-danger small"><?= getError('name') ?></span>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Name">
         </div>
         <div class="form-group">
             <label for="price">Price</label>
-            <input type="number" class="form-control" name="price" id="price" placeholder="Price" value="<?= getOldVal('price')?>">
-            <span class="text-danger small"><?= getError('price') ?></span>
+            <input type="number" class="form-control" name="price" id="price" placeholder="Price">
         </div>
         <div class="form-group">
             <label for="desc">Description</label>
-            <textarea class="form-control" name="desc" id="desc" placeholder="Description"><?= getOldVal('desc')?></textarea>
-            <span class="text-danger small"><?= getError('desc') ?></span>
+            <textarea class="form-control" name="desc" id="desc" placeholder="Description"></textarea>
         </div>
-        <button type="submit" class="btn btn-info mt-2">Create</button>
+        <button type="submit" class="btn btn-info mt-2" data-param="create">Create</button>
     </form>
 </div>
