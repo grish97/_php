@@ -43,8 +43,6 @@ class Mail
 
             $this->mail->send();
 
-            echo 'Message hes been sent';
-
         }catch(Exception $e) {
             echo 'Message could not  be  sent. Mailer error ' . $this->mail->ErrorInfo;
         }

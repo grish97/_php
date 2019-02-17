@@ -1,89 +1,188 @@
-let image = {
-    files : [],
-    iterator : 0,
+// let image = {
+//     files : [],
+//     iterator : 0,
+//
+//     read : (files) => {
+//
+//         if (files) {
+//             $.each(files, (key,value) => {
+//                image.files.push(value);
+//                 let reader = new FileReader();
+//                 reader.onload = function() {
+//                     image.viewImage(reader.result);
+//                 };
+//                 reader.readAsDataURL(value);
+//             });
+//         }
+//     },
+//
+//     viewImage : (img) => {
+//             imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.iterator++}">
+//                             <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
+//                             <img src="${img}" alt="Product Photo">
+//                         </div>`;
+//         $(`.file`).after(imgBlock);
+//     },
+//
+//     uploadData : (form,params) => {
+//         let formData = new FormData(form),
+//             images = image.files.filter((el) => el);
+//
+//         formData.delete('file[]');
+//
+//         $.each(images, (key,val) => {
+//             formData.append('file[]',val);
+//         });
+//
+//         $.ajax({
+//             url : params,
+//             data : formData,
+//             type : 'POST',
+//             success : (data) => {
+//                 data  = JSON.parse(data);
+//
+//                 if(data['error']) {
+//                     image.generateError(data['error']);
+//                     return false;
+//                 }else if (data['warning']) {
+//                     toastr.warning(data['warning']);
+//                     return false;
+//                 }
+//                 window.location.href = 'http://mvc.loc/product?product=my';
+//             },
+//             contentType : false,
+//             processData : false,
+//         });
+//
+//     },
+//
+//     generateError : (errors) => {
+//         toastr.error('Fix Errors');
+//         $.each(errors,(field,error) => {
+//             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
+//             $(`#${field}`).after(errorBlock);
+//         });
+//     },
+//
+//     deleteImage : (elem) =>  {
+//        let elemId = elem.attr('data-id'),
+//            images = image.files;
+//        delete images[elemId];
+//        elem.remove();
+//        if(!images.filter((el) => el).length) $(`[type=file]`).val('');
+//     }
+//
+// };
 
-    read : (files) => {
 
+class Data
+{
+    constructor() {
+        this.files = [];
+        this.iterator = 0;
+    }
+
+    readFile (files)  {
         if (files) {
             $.each(files, (key,value) => {
-               image.files.push(value);
+                this.files.push(value);
                 let reader = new FileReader();
                 reader.onload = function() {
-                    image.viewImage(reader.result);
+                    Data.showImage(reader.result);
                 };
                 reader.readAsDataURL(value);
             });
         }
-    },
+    }
 
-    viewImage : (img) => {
-            imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.iterator++}">
-                            <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
-                            <img src="${img}" alt="Product Photo"> 
-                        </div>`;
-        $(`.file`).after(imgBlock);
-    },
+    uploadData (form,params)  {
+        let formData = new FormData(form);
 
-    uploadData : (form,params) => {
-        let formData = new FormData(form),
-            images = image.files.filter((el) => el);
+        if(this.files.length) {
+            let images = image.files.filter((el) => el);
+            formData.delete('file[]');
 
-        formData.delete('file[]');
-
-        $.each(images, (key,val) => {
-            formData.append('file[]',val);
-        });
+            $.each(images, (key,val) => {
+                formData.append('file[]',val);
+            });
+        }
 
         $.ajax({
-            url : `store-product?store=${params}`,
+            url : params,
             data : formData,
             type : 'POST',
             success : (data) => {
-                data  = JSON.parse(data);
+                if(data) {
+                    data  = JSON.parse(data);
+                    if(data['error']) {
+                        this.generateError(data['error']);
+                        return false;
+                    }else if (data['warning']) {
+                        toastr.warning(data['warning']);
+                        return false;
+                    }else if(data['message']) {
+                        toastr.success('Verify Your Account');
+                        return true;
+                    }else if(data['link']) window.location.href = data['link'];
 
-                if(data['error']) {
-                    image.generateError(data['error']);
-                    return false;
-                }else if (data['warning']) {
-                    toastr.warning(data['warning']);
-                    return false;
                 }
-                window.location.href = 'http://mvc.loc/product?product=my';
             },
             contentType : false,
             processData : false,
         });
 
-    },
+    }
 
-    generateError : (errors) => {
+    showImage  (img)  {
+        let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${this.iterator++}">
+                            <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
+                            <img src="${img}" alt="Product Photo"> 
+                        </div>`;
+    $(`.file`).after(imgBlock);
+    }
+
+    generateError (errors)  {
         toastr.error('Fix Errors');
         $.each(errors,(field,error) => {
             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
-            $(`#${field}`).after(errorBlock);
+        $(`#${field}`).after(errorBlock);
         });
-    },
-
-    deleteImage : (elem) =>  {
-       let elemId = elem.attr('data-id'),
-           images = image.files;
-       delete images[elemId];
-       elem.remove();
-       if(!images.filter((el) => el).length) $(`[type=file]`).val('');
     }
 
-};
+    deleteImage (elem)   {
+        let elemId = elem.attr('data-id'),
+        images = this.files;
+        delete images[elemId];
+        elem.remove();
+        if(!images.filter((el) => el).length) $(`[type=file]`).val('');
+    }
+
+    deleteProduct (url) {
+        let cond = confirm("Do you want to delete this product?");
+
+        if(cond) {
+            $.ajax({
+                url : url,
+                async : false,
+                success : () => {
+                    window.location.href = 'http://mvc.loc/product=my';
+                },
+                error : (err) => {
+                    console.error(err);
+                }
+            });
+        }
+    }
+    
+}
+
+let data = new Data();
+
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 if(fileInput) {
     fileInput.addEventListener('change', function (event) {
-        image.read(event.target.files);
-        // let file = new File([''],'default.jpg',{type: 'image/jpg'});
-        // let reader = new FileReader();
-        // reader.onload = function() {
-        //     console.log(reader.result);
-        // };
-        // reader.readAsDataURL(file);
+        data.readFile(event.target.files);
     });
 }
 //DELETE ERROR BLOCK
@@ -96,32 +195,47 @@ $(`.form`).on(`submit`,(e) => {
     e.preventDefault();
     let errorBlock = $(`.errorBlock`);
     if(errorBlock) errorBlock.remove();
-    let params = $(e.target).find(`button`).attr(`data-param`);
-    image.uploadData($(e.target)[0],params);
+    let params = $(e.target).find(`button`).attr(`data-params`);
+    data.uploadData($(e.target)[0],params);
 });
 //DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
     let elem = $(this).parent('.store_img');
-    image.deleteImage(elem);
+    data.deleteImage(elem);
 });
 //DELETE PRODUCT
 $(document).on('click','.delete', function ()  {
-    let url = $(this).attr('data-action'),
-        cond = confirm("Do you want to delete this product?");
-
-    if(cond) {
-        $.ajax({
-            url : url,
-            async : false,
-            success : () => {
-                window.location.href = 'http://mvc.loc/product=my';
-            },
-            error : (err) => {
-                console.error(err);
-            }
-        });
-    }
+    let url = $(this).attr('data-action');
+        data.deleteProduct(url);
 } );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Accordion

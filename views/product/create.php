@@ -16,6 +16,6 @@
             <label for="desc">Description</label>
             <textarea class="form-control" name="desc" id="desc" placeholder="Description"></textarea>
         </div>
-        <button type="submit" class="btn btn-info mt-2" data-param="create">Create</button>
+        <button type="submit" class="btn btn-info mt-2" data-params="store-product?store=create">Create</button>
     </form>
 </div>

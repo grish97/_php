@@ -50,11 +50,10 @@ class AuthController
 
     public function register() {
         echo view('auth.register',"Register");
-        unset($_SESSION['errors']);
-        unset($_SESSION['values']);
     }
 
     public function store() {
+        unset($_SESSION['errors']);
         validate($_POST,[
             'name' => 'required|min:3|max:20',
             'last_name' => 'required|min:3|max:30',
@@ -63,7 +62,8 @@ class AuthController
         ]);
 
         if (!empty($_SESSION['errors'])) {
-           redirect('register');
+           $errors = $_SESSION['errors'];
+           echo json_encode(['error' => $errors]);
            return false;
         }
 
@@ -89,7 +89,7 @@ class AuthController
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
-        echo view('email.verify','Verify');
+        echo json_encode(['message' => 'success']);
     }
 
     public function verify($token) {
