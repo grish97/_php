@@ -105,3 +105,7 @@ function verify_token($action) {
         return false;
     }
 }
+
+function json_response(array $data) {
+    echo json_encode($data);
+}

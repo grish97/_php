@@ -11,41 +11,34 @@ class AuthController
 {
     public function login() {
         echo view('auth.login',"Login");
-        unset($_SESSION['errors']);
-        unset($_SESSION['notFound']);
-        unset($_SESSION['values']);
     }
 
     public function sign_in() {
+        unset($_SESSION['errors']);
         validate($_POST,[
             'email' => 'required|email|min:6|max:26',
             'password' => 'required|min:3|max:30'
         ]);
 
         if(isset($_SESSION['errors'])) {
-            redirect('login');
+            $errors = $_SESSION['errors'];
+            json_response(['error' => $errors]);
             return false;
         }
-        //https://www.w3schools.com/w3css/tryw3css_templates_social.htm#
+
         $email = $_POST['email'];
         $password = hash('sha256',$_POST['password']);
 
         $user = Users::query()
-                ->where('email','=',"$email")
+                ->where('email','=',$email)
                 ->get()->first();
 
         if (!empty($user) && $user['password'] === $password) {
             //Auth SET COOKIE
             setcookie('auth_user_id',$user['id']);
             $_SESSION['userData'] = $user;
-            redirect('profile');
-        }elseif(empty($user)) {
-            //EMAIL ADDRESS DOES NOT EXIST
-            $_SESSION['notFound'] = 'Address does not exist!';
-            redirect('login');
-        }else {
-            redirect('login');
-        }
+            json_response(['link' => 'profile']);
+        }else json_response(['message' => 'Wrong Email and Password']);
     }
 
     public function register() {
@@ -54,6 +47,7 @@ class AuthController
 
     public function store() {
         unset($_SESSION['errors']);
+
         validate($_POST,[
             'name' => 'required|min:3|max:20',
             'last_name' => 'required|min:3|max:30',
@@ -63,7 +57,7 @@ class AuthController
 
         if (!empty($_SESSION['errors'])) {
            $errors = $_SESSION['errors'];
-           echo json_encode(['error' => $errors]);
+           json_response(['error' => $errors]);
            return false;
         }
 
@@ -89,7 +83,7 @@ class AuthController
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
-        echo json_encode(['message' => 'success']);
+        json_response(['message' => 'Confirmation letter has been successfully sent']);
     }
 
     public function verify($token) {

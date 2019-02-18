@@ -7,6 +7,9 @@ use Carbon\Carbon;
 
 class ProductController
 {
+
+    public $endImage;
+
     public function __construct() {
 
     }
@@ -46,7 +49,7 @@ class ProductController
 
         if(isset($_SESSION['errors'])) {
             $data = $_SESSION['errors'];
-            echo json_encode(['error' => $data]);
+            json_response(['error' => $data]);
             return false;
         }
 
@@ -67,7 +70,7 @@ class ProductController
             $image = implode(', ', $_FILES['file']['name']);
         }
 
-        $image_name = isset($image) ? $image : 'default.jpg';
+        $upload_image_name = isset($image) ? $image : '';
 
         if ($role === 'create') {
             $creator_id = $_COOKIE['auth_user_id'];
@@ -82,32 +85,42 @@ class ProductController
                     $name,
                     $desc,
                     $price,
-                    $image_name,
+                    $upload_image_name,
                     $creator_id
                 ]);
         }elseif ($role === 'edit') {
             $product = Products::query()->where('id','=',$id)->get()->first();
 
             if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
+                $tableImage = str_replace(',',' ',$product['image_name']);
+
+                if(!empty($_POST['tableImage'])) {
+                    $deleted_img = $_POST['tableImage'];
+
+                    foreach($deleted_img as $val) {
+                        $tableImage = str_replace($val,'',$tableImage);
+                    }
+                    if(!empty($upload_image_name))  $upload_image_name .= $tableImage;
+                }
+
                 Products::query()
                     ->where('id','=',$id)
                     ->update([
                         'name' => $name,
                         'description' => $desc,
                         'price' => $price,
-                        'image_name' => $image_name ,
+                        'image_name' => str_replace(' ', ', ',$upload_image_name),
                         'updated_at' => Carbon::now()
                     ]);
             }else {
-                echo json_encode(['warning' => 'Warning']);
+                json_response(['warning' => 'Warning']);
                 return false;
             }
         }else {
-            echo json_encode(['warning' => 'Warning']);
+            json_response(['warning' => 'Warning']);
             return false;
         }
-
-        echo json_encode(['message' => 'success']);
+        json_response(['link' => 'product?product=my']);
     }
 
     public function edit($id) {

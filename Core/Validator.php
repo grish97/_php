@@ -45,7 +45,7 @@ class Validator
                 $pattern = "/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/";
                 $match = preg_match($pattern,$_data[$field]);
                 if(!$match) {
-                    $this->errorMessage($field,$rule);print_r('email');
+                    $this->errorMessage($field,$rule);
                 }
             break;
             case 'number' :

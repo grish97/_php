@@ -1,85 +1,9 @@
-// let image = {
-//     files : [],
-//     iterator : 0,
-//
-//     read : (files) => {
-//
-//         if (files) {
-//             $.each(files, (key,value) => {
-//                image.files.push(value);
-//                 let reader = new FileReader();
-//                 reader.onload = function() {
-//                     image.viewImage(reader.result);
-//                 };
-//                 reader.readAsDataURL(value);
-//             });
-//         }
-//     },
-//
-//     viewImage : (img) => {
-//             imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${image.iterator++}">
-//                             <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
-//                             <img src="${img}" alt="Product Photo">
-//                         </div>`;
-//         $(`.file`).after(imgBlock);
-//     },
-//
-//     uploadData : (form,params) => {
-//         let formData = new FormData(form),
-//             images = image.files.filter((el) => el);
-//
-//         formData.delete('file[]');
-//
-//         $.each(images, (key,val) => {
-//             formData.append('file[]',val);
-//         });
-//
-//         $.ajax({
-//             url : params,
-//             data : formData,
-//             type : 'POST',
-//             success : (data) => {
-//                 data  = JSON.parse(data);
-//
-//                 if(data['error']) {
-//                     image.generateError(data['error']);
-//                     return false;
-//                 }else if (data['warning']) {
-//                     toastr.warning(data['warning']);
-//                     return false;
-//                 }
-//                 window.location.href = 'http://mvc.loc/product?product=my';
-//             },
-//             contentType : false,
-//             processData : false,
-//         });
-//
-//     },
-//
-//     generateError : (errors) => {
-//         toastr.error('Fix Errors');
-//         $.each(errors,(field,error) => {
-//             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
-//             $(`#${field}`).after(errorBlock);
-//         });
-//     },
-//
-//     deleteImage : (elem) =>  {
-//        let elemId = elem.attr('data-id'),
-//            images = image.files;
-//        delete images[elemId];
-//        elem.remove();
-//        if(!images.filter((el) => el).length) $(`[type=file]`).val('');
-//     }
-//
-// };
-
-
 class Data
 {
     constructor() {
         this.files = [];
         this.iterator = 0;
+        this.tableImage = [];
     }
 
     readFile (files)  {
@@ -88,7 +12,7 @@ class Data
                 this.files.push(value);
                 let reader = new FileReader();
                 reader.onload = function() {
-                    Data.showImage(reader.result);
+                    data.showImage(reader.result);
                 };
                 reader.readAsDataURL(value);
             });
@@ -98,19 +22,25 @@ class Data
     uploadData (form,params)  {
         let formData = new FormData(form);
 
-        if(this.files.length) {
-            let images = image.files.filter((el) => el);
+        if(this.files.length !== 0) {
+            let images = data.files.filter((el) => el);
             formData.delete('file[]');
 
             $.each(images, (key,val) => {
                 formData.append('file[]',val);
             });
+
+            if(this.tableImage.length !== 0) {
+                $.each(data.tableImage,(key,image) => {
+                    formData.append('tableImage[]',image);
+                });
+            }
         }
 
         $.ajax({
             url : params,
             data : formData,
-            type : 'POST',
+            type : 'post',
             success : (data) => {
                 if(data) {
                     data  = JSON.parse(data);
@@ -121,9 +51,9 @@ class Data
                         toastr.warning(data['warning']);
                         return false;
                     }else if(data['message']) {
-                        toastr.success('Verify Your Account');
+                        toastr.info(data['message']);
                         return true;
-                    }else if(data['link']) window.location.href = data['link'];
+                    }else if(data['link']) window.location.href = `http://mvc.loc/${data['link']}`;
 
                 }
             },
@@ -151,8 +81,13 @@ class Data
 
     deleteImage (elem)   {
         let elemId = elem.attr('data-id'),
-        images = this.files;
-        delete images[elemId];
+            images = this.files,
+            _tableImage = elem.closest(`.store_img`).attr(`data-name`);
+
+        if(_tableImage) {
+           this.tableImage.push(_tableImage);
+        }else delete images[elemId];
+
         elem.remove();
         if(!images.filter((el) => el).length) $(`[type=file]`).val('');
     }
@@ -165,7 +100,7 @@ class Data
                 url : url,
                 async : false,
                 success : () => {
-                    window.location.href = 'http://mvc.loc/product=my';
+                    window.location.href = 'http://mvc.loc/product=all';
                 },
                 error : (err) => {
                     console.error(err);

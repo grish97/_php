@@ -1,12 +1,13 @@
 <div class="container mb-5">
     <div class="card mt-5 bg-white shadow-lg">
             <div class="image_block d-inline-block">
-                <?php foreach (image($product['image_name']) as $image) : ?>
-                    <div class="show_img d-inline-block shadow">
-<!--                        <a href="" class="show_prod"><i class="fas fa-times"></i></a>-->
-                        <img src="<?= str_trim ('/public/storage/products/' . $image)?>" alt="Product Photo">
-                    </div>
-                <?php endforeach; ?>
+                <?php if(!empty($product['image_name'])) : ?>
+                    <?php foreach (image($product['image_name']) as $image) : ?>
+                        <div class="show_img d-inline-block shadow">
+                            <img src="<?= str_trim ('/public/storage/products/' . $image)?>" alt="Product Photo">
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
             <div class="card-body">
                 <h5 class="card-title"><span class="font-weight-bold">Name</span> : <?= $product['name'] ?></h5>

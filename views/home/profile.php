@@ -31,9 +31,6 @@
                                 <a href="product?product=my" class="nav-link">My Post</a>
                             </li>
                             <li class="nav-item">
-                                <a href="product?product=all" class="nav-link">All Post</a>
-                            </li>
-                            <li class="nav-item">
                                 <a href="create-product" class="nav-link">Create Post</a>
                             </li>
                         </ul>
