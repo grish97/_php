@@ -4,7 +4,7 @@
                 <?php if(!empty($product['image_name'])) : ?>
                     <?php foreach (image($product['image_name']) as $image) : ?>
                         <div class="show_img d-inline-block shadow">
-                            <img src="<?= str_trim ('/public/storage/products/' . $image)?>" alt="Product Photo">
+                            <img src='<?= str_trim ("/public/storage/products/$image")?>' alt="Product Photo">
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>

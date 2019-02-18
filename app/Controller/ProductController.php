@@ -92,15 +92,11 @@ class ProductController
             $product = Products::query()->where('id','=',$id)->get()->first();
 
             if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
-                $tableImage = str_replace(',',' ',$product['image_name']);
-
+                $tableImage = explode(',',$product['image_name']);
+                $upload = isset($upload_image_name) ? explode(',',$upload_image_name) : [];
                 if(!empty($_POST['tableImage'])) {
                     $deleted_img = $_POST['tableImage'];
 
-                    foreach($deleted_img as $val) {
-                        $tableImage = str_replace($val,'',$tableImage);
-                    }
-                    if(!empty($upload_image_name))  $upload_image_name .= $tableImage;
                 }
 
                 Products::query()
@@ -109,7 +105,7 @@ class ProductController
                         'name' => $name,
                         'description' => $desc,
                         'price' => $price,
-                        'image_name' => str_replace(' ', ', ',$upload_image_name),
+                        'image_name' => $upload_image_name,
                         'updated_at' => Carbon::now()
                     ]);
             }else {

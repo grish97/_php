@@ -22,20 +22,17 @@ class Data
     uploadData (form,params)  {
         let formData = new FormData(form);
 
-        if(this.files.length !== 0) {
-            let images = data.files.filter((el) => el);
-            formData.delete('file[]');
+        let images = data.files.filter((el) => el);
+        formData.delete('file[]');
 
-            $.each(images, (key,val) => {
-                formData.append('file[]',val);
-            });
+        $.each(images, (key,val) => {
+            formData.append('file[]',val);
+        });
 
-            if(this.tableImage.length !== 0) {
-                $.each(data.tableImage,(key,image) => {
-                    formData.append('tableImage[]',image);
-                });
-            }
-        }
+        $.each(data.tableImage,(key,image) => {
+            formData.append('tableImage[]',image);
+        });
+
 
         $.ajax({
             url : params,
