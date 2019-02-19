@@ -3,6 +3,7 @@
 namespace app\Controller;
 
 use app\Models\Products;
+use app\Models\Images;
 use Carbon\Carbon;
 
 class ProductController
@@ -59,15 +60,13 @@ class ProductController
 
         if(isset($_FILES['file']['tmp_name'][0])) {
             $file = $_FILES['file'];
-            $file_name = $file['name'];
+            global $file_name = $file['name'];
             $tmp_name = $file['tmp_name'];
             $destination = base_dir('public/storage/products');
 
             for($i = 0; $i < count($tmp_name); $i++) {
                 move_uploaded_file($tmp_name[$i],"$destination/$file_name[$i]");
             }
-
-            $image = implode(', ', $_FILES['file']['name']);
         }
 
         $upload_image_name = isset($image) ? $image : '';
@@ -92,12 +91,22 @@ class ProductController
             $product = Products::query()->where('id','=',$id)->get()->first();
 
             if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
-                $tableImage = explode(',',$product['image_name']);
-                $upload = isset($upload_image_name) ? explode(',',$upload_image_name) : [];
+                $tableImage = str_replace(', ',' ',$product['image_name']);
+                $folder = './public/storage/products/';
+
                 if(!empty($_POST['tableImage'])) {
                     $deleted_img = $_POST['tableImage'];
+                    foreach($deleted_img as $val) {
+                        $tableImage = str_replace($val,'',$tableImage);
+                    }
 
+                    foreach($deleted_img as $_image) {
+                        unlink($folder.$_image);
+                    }
                 }
+
+                if(!empty($upload_image_name)) $tableImage .= ' ' . $upload_image_name;
+
 
                 Products::query()
                     ->where('id','=',$id)
@@ -105,9 +114,10 @@ class ProductController
                         'name' => $name,
                         'description' => $desc,
                         'price' => $price,
-                        'image_name' => $upload_image_name,
+                        'image_name' => $tableImage,
                         'updated_at' => Carbon::now()
                     ]);
+
             }else {
                 json_response(['warning' => 'Warning']);
                 return false;

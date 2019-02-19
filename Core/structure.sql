@@ -18,3 +18,11 @@ CREATE TABLE products (
   updated_at datetime,
   created_at timestamp
 );
+
+CREATE TABLE images (
+  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  name varchar(60) NOT NULL,
+  product_id int(11) NOT NULL,
+  updated_at datetime,
+  created_at timestamp
+);
