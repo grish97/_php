@@ -26,6 +26,7 @@
                     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
                     <a href="users" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Users"><i class="fa fa-user"></i></a>
                     <a href="product?product=all" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Product"><i class="fas fa-cart-arrow-down"></i></a>
+                    <a href="notice" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Notice"><i class="fas fa-bell"></i></a>
                     <div class="d-flex justify-content-end">
                         <p class="pt-2 mr-1"><?= userData('email')?></p>
                         <a href="logout" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fas fa-sign-out-alt"></i>Logout</a>

@@ -29,3 +29,11 @@ CREATE TABLE images (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE
   FOREIGN KEY (is_avatar) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE notice (
+  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  userId int(11),
+  status int(11),
+  message varchar(256),
+  created_at timestamp
+)
