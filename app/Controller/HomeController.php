@@ -1,6 +1,8 @@
 <?php
 namespace app\Controller;
 
+use app\Models\Images;
+
 Class HomeController
 {
     public function index() {
@@ -8,7 +10,10 @@ Class HomeController
     }
 
     public function profile() {
-        echo view('home.profile','MY Profile');
+        $userId = userData('id');
+        $avatar = Images::query()->where('is_avatar','=',$userId)->get()->all();
+        $avatar = image($avatar,'avatar.png');
+        echo view('home.profile','MY Profile',['avatar' => $avatar]);
     }
 
     public function logout() {

@@ -70,14 +70,15 @@ function userData ($data) {
     return $_SESSION['userData']["$data"];
 }
 
-function image($image,$default = '') {
-    if(!empty(str_trim($image))) {
-        $images_arr = explode(' ',$image);
-        $images_arr = array_values(array_filter($images_arr));
-    }
-    if(!empty($default)) $images_arr = 'default.jpg';
+function image($image,$default) {
+    $image_arr = [];
+    if(!empty($image)) {
+        foreach($image as $key => $value) {
+            $image_arr[$key] = $value['name'];
+        }
+    }else $image_arr[0] = $default;
 
-    return $images_arr;
+    return $image_arr;
 }
 
 function str_trim ($string) {

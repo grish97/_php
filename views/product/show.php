@@ -1,10 +1,10 @@
 <div class="container mb-5">
     <div class="card mt-5 bg-white shadow-lg">
             <div class="image_block d-inline-block">
-                <?php if(!empty($product['image_name'])) : ?>
-                    <?php foreach (image($product['image_name']) as $image) : ?>
+                <?php if(!empty($image)) : ?>
+                    <?php foreach ($image as $val) : ?>
                         <div class="show_img d-inline-block shadow">
-                            <img src='<?= str_trim ("/public/storage/products/$image")?>' alt="Product Photo">
+                            <img src="/public/storage/products/<?=$val['name']?>" alt="Product Photo">
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>

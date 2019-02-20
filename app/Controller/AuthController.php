@@ -4,6 +4,7 @@
 namespace app\Controller;
 
 use app\Models\Users;
+use app\Models\Images;
 use Core\Mail\Mail;
 use Carbon\Carbon;
 
@@ -61,11 +62,23 @@ class AuthController
            return false;
         }
 
+
         $name = $_POST['name'];
         $last_name = $_POST['last_name'];
         $email = $_POST['email'];
         $password = hash('sha256',$_POST['password']);
+        $avatar = isset($_FILES['file']) ? $_FILES['file']['name'] : '';
         $token = str_random(60);
+
+        if(isset($_FILES['file'])) {
+            $file = $_FILES['file'];
+            $file_name = $file['name'];
+            $tmp_name = $file['tmp_name'];
+            $direct = './public/storage/avatar/';
+            for($i = 0; $i < count($tmp_name);$i++) {
+                move_uploaded_file($tmp_name[$i],$direct.$file_name[$i]);
+            }
+        }
 
         Users::query()->create([
             'name',
@@ -80,6 +93,21 @@ class AuthController
             $password,
             $token,
         ]);
+        $userId = Users::query()->max('id')->first();
+        $userId = $userId['last_id'];
+        if(!empty($avatar)) {
+            foreach ($avatar as $image) {
+                Images::query()
+                    ->insert([
+                        'name',
+                        'is_avatar'
+                    ],[
+                        $image,
+                        $userId
+                    ]);
+            }
+        }
+
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW

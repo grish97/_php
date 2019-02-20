@@ -30,7 +30,7 @@ class Data
         });
 
         $.each(data.tableImage,(key,image) => {
-            formData.append('tableImage[]',image);
+            formData.append('base_img[]',image);
         });
 
 
@@ -96,8 +96,9 @@ class Data
             $.ajax({
                 url : url,
                 async : false,
-                success : () => {
-                    window.location.href = 'http://mvc.loc/product=all';
+                success : (data) => {
+                    data = JSON.parse(data);
+                    window.location.href = `http://mvc.loc/${data['link']}`;
                 },
                 error : (err) => {
                     console.error(err);

@@ -18,10 +18,11 @@ class ProductController
     public function index($role) {
         if ($role === 'my') {
             $creator_id = userData('id');
-            $product = Products::query()->where('creator_id', '=',$creator_id)
-                ->get()->all();
+            $product = Products::query()->where('creator_id', '=',$creator_id)->get()->all();
+            $image = Images::query()->where('creator_id','=',$creator_id)->get()->all();
         }elseif ($role === 'all') {
             $product = Products::query()->get()->all();
+            $image = Images::query()->get()->all();
         }
 
         if(empty($product)) {
@@ -29,7 +30,7 @@ class ProductController
             return false;
         }
 
-        echo view('product.index',"Product",['product' => $product]);
+        echo view('product.index',"Product",['product' => $product,'image' => $image]);
     }
 
     public function create() {
@@ -57,10 +58,12 @@ class ProductController
         $name = $_POST['name'];
         $desc = $_POST['desc'];
         $price = $_POST['price'];
+        $fileName = !empty($_FILES['file']) ? $_FILES['file']['name'] : '';
 
+        //UPLOAD DIRECTORY
         if(isset($_FILES['file']['tmp_name'][0])) {
             $file = $_FILES['file'];
-            global $file_name = $file['name'];
+            $file_name = $file['name'];
             $tmp_name = $file['tmp_name'];
             $destination = base_dir('public/storage/products');
 
@@ -69,8 +72,6 @@ class ProductController
             }
         }
 
-        $upload_image_name = isset($image) ? $image : '';
-
         if ($role === 'create') {
             $creator_id = $_COOKIE['auth_user_id'];
             Products::query()
@@ -78,35 +79,46 @@ class ProductController
                     'name',
                     'description',
                     'price',
-                    'image_name',
                     'creator_id',
                 ],[
                     $name,
                     $desc,
                     $price,
-                    $upload_image_name,
                     $creator_id
                 ]);
+
+            $newProductId = Products::query()->max('id')->first();
+
+            if(!empty($fileName)) {
+
+                foreach($fileName as $image) {
+                    Images::query()
+                        ->insert([
+                            'name',
+                            'product_id',
+                            'creator_id'
+                        ],[
+                            $image,
+                            $newProductId['last_id'],
+                            $creator_id
+                        ]);
+                }
+            }
+
         }elseif ($role === 'edit') {
             $product = Products::query()->where('id','=',$id)->get()->first();
 
             if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
-                $tableImage = str_replace(', ',' ',$product['image_name']);
-                $folder = './public/storage/products/';
+                $deleted_img = isset($_POST['base_img']) ? $_POST['base_img'] : '';
 
-                if(!empty($_POST['tableImage'])) {
-                    $deleted_img = $_POST['tableImage'];
+                if(!empty($deleted_img)) {
+                    $fileDirectory = './public/storage/products/';
                     foreach($deleted_img as $val) {
-                        $tableImage = str_replace($val,'',$tableImage);
-                    }
+                        Images::query()->where('name','=',$val)->delete();
 
-                    foreach($deleted_img as $_image) {
-                        unlink($folder.$_image);
+                        unlink($fileDirectory . $val);
                     }
                 }
-
-                if(!empty($upload_image_name)) $tableImage .= ' ' . $upload_image_name;
-
 
                 Products::query()
                     ->where('id','=',$id)
@@ -114,9 +126,23 @@ class ProductController
                         'name' => $name,
                         'description' => $desc,
                         'price' => $price,
-                        'image_name' => $tableImage,
                         'updated_at' => Carbon::now()
                     ]);
+
+                if(!empty($fileName)) {
+                    foreach($fileName as $val) {
+                        Images::query()
+                            ->insert([
+                                'name',
+                                'product_id',
+                                'creator_id'
+                            ],[
+                                $val,
+                                $id,
+                                userData('id')
+                            ]);
+                    }
+                }
 
             }else {
                 json_response(['warning' => 'Warning']);
@@ -133,20 +159,21 @@ class ProductController
         $product = Products::query()
                     ->where('id','=',$id)
                     ->get()->first();
-
+        $image = Images::query()->where('product_id','=',$id)->get()->all();
         if ($product['creator_id'] !== userData('id')) {
             redirect('profile');
             return false;
         }
-        echo view('product.edit',"Edit Product",['product' => $product]);
+        echo view('product.edit',"Edit Product",['product' => $product,'image' => $image]);
     }
 
     public function show($id) {
         $product = Products::query()
                     ->where('id','=',$id)
                     ->get()->first();
+        $image = Images::query()->where('product_id','=',$id)->get()->all();
 
-        echo view('product.show','Product', ['product' => $product]);
+        echo view('product.show','Product', ['product' => $product,'image' => $image]);
     }
 
     public function delete($id) {
@@ -158,6 +185,7 @@ class ProductController
             Products::query()
                     ->where('id','=',$id)->delete();
         }
+        json_response(['link' => 'profile']);
     }
 
 

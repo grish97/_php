@@ -3,7 +3,13 @@
         <?php foreach($product as $key => $value) : ?>
             <div class="card product shadow">
                 <a href="show?id=<?= $value['id']?>" class="show_prod"><i class="far fa-eye"></i></a>
-                <img src="<?= '/public/storage/products/'.image($value['image_name'])[0]?>" alt="Product Photo">
+                    <?php if(!empty($image)) { foreach($image as $img) { ?>
+                        <?php if($value['id'] == $img['product_id']) : ?>
+                            <img src="<?= '/public/storage/products/' . $img['name']?>" alt="Product Photo">
+                        <?php break; endif; ?>
+                    <?php } }else { ?>
+                        <img src="/public/images/default.png " alt="Product Photo">
+                    <?php } ?>
                 <div class="card-body">
                     <h5 class="card-title"><?= $value['name'] ?></h5>
                     <p class="card-text"><?= $value['description'] ?></p>

@@ -86,6 +86,12 @@ class ORMBase
         return $this->data;
     }
 
+    public function max($column) {
+        $sql = "SELECT max($column) AS last_id FROM $this->table";
+        $this->data =  $this->executeStatment($sql);
+        return $this;
+    }
+
     public function getTableName() {
         $classPath = get_called_class();
         $parts = explode('\\',$classPath);

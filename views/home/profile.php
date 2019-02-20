@@ -7,8 +7,9 @@
             <!-- Profile -->
             <div class="w3-card w3-round w3-white">
                 <div class="w3-container">
-                    <h4 class="w3-center">My Profile</h4>
-                    <p class="w3-center"><img src="/w3images/avatar3.png" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                    <div class="avatar mx-auto mt-3 mb-4">
+                        <img src="/public/storage/avatar/<?=$avatar[0]?>" class="w3-circle" alt="Avatar">
+                    </div>
                     <hr>
                     <p><i class="fas fa-pen fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
                     <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>

@@ -20,5 +20,8 @@ return [
     'product?'       => 'product/index',
     'show?'          => 'product/show',
     'delete?'        => 'product/delete',
-    'edit?'          => 'product/edit'
+    'edit?'          => 'product/edit',
+    //USERS
+    'users'          => 'user/index',
+    'friendRequest?'  => 'user/friendRequest'
 ];
