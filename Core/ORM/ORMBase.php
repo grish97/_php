@@ -33,7 +33,15 @@ class ORMBase
     }
 
     public function where($columnName, $statment, $arg){
-        $this->where = ' WHERE ' . ' ' . $columnName . ' ' . $statment . '"' . $arg .'"';
+        if($statment === 'AND') {
+            $where = [];
+            for($i = 0; $i < count($columnName); $i++) {
+                $where[$i] = "$columnName[$i]='$arg[$i]'";
+            }
+            $where = str_replace(','," $statment ",implode(',',$where));
+        }
+
+        $this->where = ' WHERE '  . (isset($where) ? " $where " : "$columnName $statment '$arg'");
         return $this;
     }
 

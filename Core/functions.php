@@ -81,6 +81,11 @@ function image($image,$default) {
     return $image_arr;
 }
 
+function hasRequest () {
+    $userController = new app\Controller\UserController();
+     return $userController->hasRequest();
+}
+
 function str_trim ($string) {
     $string = str_replace(' ', '', $string);
     return $string;

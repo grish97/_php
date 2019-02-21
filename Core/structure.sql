@@ -30,10 +30,17 @@ CREATE TABLE images (
   FOREIGN KEY (is_avatar) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE notice (
-  id int(11) AUTO_INCREMENT PRIMARY KEY,
-  userId int(11),
-  status int(11),
-  message varchar(256),
-  created_at timestamp
+CREATE TABLE friendPivot (
+  id_from int(11),
+  id_to int(11),
+  FOREIGN KEY (id_from) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_to) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 )
+
+CREATE TABLE friends (
+  user_1 int(11),
+  user_2 int(11),
+   FOREIGN KEY (user_1) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+   FOREIGN KEY (user_2) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+)
+

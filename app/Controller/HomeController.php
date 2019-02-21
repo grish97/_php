@@ -2,16 +2,22 @@
 namespace app\Controller;
 
 use app\Models\Images;
+use app\Models\FriendPivot;
 
 Class HomeController
 {
+    public $userId;
+
+    public function __construct() {
+        if(auth()) $this->userId = userData('id');
+    }
+
     public function index() {
         echo view('home.index',"Home");
     }
 
     public function profile() {
-        $userId = userData('id');
-        $avatar = Images::query()->where('is_avatar','=',$userId)->get()->all();
+        $avatar = Images::query()->where('is_avatar','=',$this->userId)->get()->all();
         $avatar = image($avatar,'avatar.png');
         echo view('home.profile','MY Profile',['avatar' => $avatar]);
     }

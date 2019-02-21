@@ -106,6 +106,21 @@ a:hover {
     object-fit:cover;
 }
 
+/*NOTIFICATION*/
+
+.notice {
+    display: block;
+    position: absolute;
+    top: 4px;
+    right: 11px;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    background: red;
+    color:#fff;
+}
+
 /*FOR FOOTER*/
 #footer {
     position:fixed;

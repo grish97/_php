@@ -41,18 +41,18 @@ class Data
             success : (data) => {
                 if(data) {
                     data  = JSON.parse(data);
-                    if(data['error']) {
-                        this.generateError(data['error']);
-                        return false;
-                    }else if (data['warning']) {
-                        toastr.warning(data['warning']);
-                        return false;
-                    }else if(data['message']) {
-                        toastr.info(data['message']);
-                        return true;
-                    }else if(data['link']) window.location.href = `http://mvc.loc/${data['link']}`;
+                if(data['error']) {
+                    this.generateError(data['error']);
+                    return false;
+                }else if (data['warning']) {
+                    toastr.warning(data['warning']);
+                    return false;
+                }else if(data['message']) {
+                    toastr.info(data['message']);
+                    return true;
+                }else if(data['link']) window.location.href = `http://mvc.loc/${data['link']}`;
 
-                }
+            }
             },
             contentType : false,
             processData : false,
@@ -106,6 +106,27 @@ class Data
             });
         }
     }
+
+    request (url,elem) {
+        $.ajax({
+            url : url,
+            method : "post",
+            success : (_data) => {
+                if(!_data) return false;
+                _data = JSON.parse(_data);
+                if(_data['message']) toastr.success(_data['message']);
+                if(_data['delete']) data.deleteElem(elem);
+            },
+            error : (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    deleteElem (elem) {
+       elem = elem.closest('.requestBlock');
+       elem.remove();
+    }
     
 }
 
@@ -141,6 +162,13 @@ $(document).on('click','.delete', function ()  {
     let url = $(this).attr('data-action');
         data.deleteProduct(url);
 } );
+//FRIENDS REQUEST
+$(document).on('click','.request',(e) => {
+    let elem  = $(e.target),
+        action = elem.attr('data-action');
+    elem.attr('disabled',true);
+    data.request(action,elem);
+});
 
 
 

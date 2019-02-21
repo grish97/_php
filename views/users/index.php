@@ -6,7 +6,7 @@
                     <img src="/public/images/avatar.jpg" class='smallAvatar' alt="Avatar">
                 </div>
                 <span class=""><?=$user['name'] . ' ' . $user['last_name']?></span>
-                <button class="btn btn-info float-right" data-action="friends?id=<?=$user['id']?>">Friends</button>
+                <button class="btn btn-info float-right request" data-action="friendRequest?id=<?=$user['id']?>">Friends</button>
             </div>
         <?php  endif; endforeach; endif ?>
     </div>
