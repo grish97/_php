@@ -22,11 +22,10 @@ CREATE TABLE products (
 CREATE TABLE images (
   id int(11) AUTO_INCREMENT PRIMARY KEY,
   name varchar(60) NOT NULL,
-  is_avatar int(11)
+  is_avatar int(11),
   product_id int(11),
-  updated_at datetime,
   created_at timestamp,
-  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (is_avatar) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

@@ -16,8 +16,15 @@ class UserController
     }
     public function index() {
         $users = Users::query()->get()->all();
+        $friends = Friends::query()->where(['user_1','user_2'],'OR',[$this->userId,$this->userId])->get()->all();
+//        foreach($friends as $friend) {
+//            if($friend['user_1'] !== $this->userId || $friend['user_2'] ==! $this->userId) {
+//                print_r($friend['user_1']);
+//            }
+//        }
+//        dd($friend);
         $avatar = Images::query()->where('is_avatar' ,'!=',null)->get()->all();
-        $sentRequest =FriendPivot::query()->where('id_from','=',$this->userId)->get()->all();
+        $sentRequest = FriendPivot::query()->where('id_from','=',$this->userId)->get()->all();
        echo view('users.index','Users',['users' => $users,'avatar' => $avatar,'sentRequest' => $sentRequest]);
     }
 
