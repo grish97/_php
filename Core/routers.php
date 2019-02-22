@@ -22,8 +22,11 @@ return [
     'delete?'        => 'product/delete',
     'edit?'          => 'product/edit',
     //USERS
-    'users?'          => 'user/index',
+    'users'          => 'user/index',
+    'friends'        => 'user/friends',
+    'friend?'        => 'user/friend',
     'friendRequest?' => 'user/friendRequest',
     'notice'         => 'user/notice',
-    'requestAnswer?'  => 'user/requestAnswer'
+    'requestAnswer?' => 'user/requestAnswer',
+    'deleteFriend?'  => 'user/deleteFriend',
 ];

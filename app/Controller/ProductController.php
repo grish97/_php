@@ -26,7 +26,7 @@ class ProductController
         }
 
         if(empty($product)) {
-            echo '<h3>No Products</h3>';
+            echo view('layout.empty','Empty',['message' => 'You are have not Products','url' => 'create-product','name' => 'Products']);
             return false;
         }
 

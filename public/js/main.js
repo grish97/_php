@@ -6,6 +6,21 @@ class Data
         this.tableImage = [];
     }
 
+    conditions () {
+        //REQUEST ICON
+        let requestCount = $(`.notice`);
+        if(!requestCount.text()) requestCount.addClass(`d-none`);
+
+        //FRIENDS REQUEST BUTTON TEXT
+        let requestButton = $(`.request`),
+            length = requestButton.length;
+        if(length !== 0) {
+            for(let i = 0; i < length;i++) {
+               if(requestButton.eq(i).text() === `Sent`) requestButton.eq(i).removeAttr('data-action').attr(`disabled`,true);
+            }
+        }
+    }
+
     readFile (files)  {
         if (files) {
             $.each(files, (key,value) => {
@@ -131,7 +146,7 @@ class Data
 }
 
 let data = new Data();
-
+data.conditions();
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 if(fileInput) {
@@ -169,9 +184,6 @@ $(document).on('click','.request',(e) => {
     elem.attr('disabled',true);
     data.request(action,elem);
 });
-
-
-
 
 
 

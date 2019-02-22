@@ -33,7 +33,7 @@ class ORMBase
     }
 
     public function where($columnName, $statment, $arg){
-        if($statment === 'AND') {
+        if($statment === 'AND' || $statment === 'OR') {
             $where = [];
             for($i = 0; $i < count($columnName); $i++) {
                 $where[$i] = "$columnName[$i]='$arg[$i]'";

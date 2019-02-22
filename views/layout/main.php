@@ -26,7 +26,7 @@
                     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
                     <a href="users" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Users"><i class="fa fa-user"></i></a>
                     <a href="product?product=all" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Product"><i class="fas fa-cart-arrow-down"></i></a>
-                    <a href="notice?user=all" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white position-relative" title="Notice"><i class="fas fa-bell"></i><span class="notice"><?= hasRequest()?></span> </a>
+                    <a href="notice" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white position-relative" title="Notice"><i class="fas fa-bell"></i><span class="notice"><?= hasRequest()?></span> </a>
                     <div class="d-flex justify-content-end">
                         <p class="pt-2 mr-1"><?= userData('email')?></p>
                         <a href="logout" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fas fa-sign-out-alt"></i>Logout</a>
@@ -48,6 +48,7 @@
         </footer>
         <!--SCRIPT-->
         <script src="/public/js/access/jquery.min.js"></script>
+        <script src="/public/js/access/popper.min.js"></script>
         <script src="/public/js/access/bootstrap.min.js"></script>
         <script src="/node_modules/toastr/toastr.js"></script>
         <script src="/public/js/main.js"></script>

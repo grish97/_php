@@ -86,6 +86,19 @@ function hasRequest () {
      return $userController->hasRequest();
 }
 
+function hasSentRequest( $sentRequest,$userId) {
+    if(!empty($sentRequest)) {
+        foreach($sentRequest as $val) {
+            if($val['id_to'] == $userId) {
+                return 'Sent';
+            }
+
+        }
+    }
+
+    return 'Friends';
+}
+
 function str_trim ($string) {
     $string = str_replace(' ', '', $string);
     return $string;
