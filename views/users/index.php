@@ -5,9 +5,10 @@
                 <div class="smallAvatar d-inline-block mr-3">
                     <img src="/public/storage/avatar/avatar.jpg" class='smallAvatar' alt="Avatar">
                 </div>
-                <span class=""><?=$user['name'] . ' ' . $user['last_name']?></span>
-                <button class="btn btn-info float-right request" data-action="friendRequest?id=<?=$user['id']?>"><?= hasSentRequest($sentRequest,$user['id'])?></button>
+                <a href="friend?id=<?=$user['id']?>"><span class=""><?=$user['name'] . ' ' . $user['last_name']?></span></a>
+               <?= roleButton($sentRequest,$user['id'],$friendsId)?>
             </div>
         <?php  endif; endforeach; endif ?>
     </div>
 </div>
+

@@ -5,10 +5,14 @@ namespace Core;
 Class Router
 {
     private $routers;
+    private $pageCond;
+    public $page;
 
     public function __construct()
     {
         $this->routers = require_once 'routers.php';
+        $this->pageCond = require_once 'conditionsPage.php';
+        $this->page = false;
         $this->getURI();
     }
 
@@ -27,6 +31,8 @@ Class Router
 
         foreach($this->routers as $key => $value) {
             if (($key . $get) === $uri) {
+                $this->middleware($key);
+                $this->page = true;
                 $parts = explode('/',$value);
                 $controller = ucfirst($parts[0]) . 'Controller';
                 $action = $parts[1];
@@ -43,6 +49,29 @@ Class Router
 
         }
 
+        if($this->page === false) {
+           echo view('page.404','Page not found');
+        }
+
+    }
+
+    private function middleware($url) {
+        foreach($this->pageCond as $key => $page) {
+            if($key === 'auth' && in_array($url,$page)) {
+                if(!auth()) {
+                    redirect('login');
+                    return false;
+                }
+                return true;
+            }elseif ($key === 'guest' && in_array($url,$page)) {
+                if(auth()){
+                    redirect('profile');
+                    return false;
+                }
+                return true;
+            }
+
+        }
     }
 }
 

@@ -15,17 +15,25 @@ class UserController
         if(auth()) $this->userId = userData('id');
     }
     public function index() {
+        $friendsId = [];
         $users = Users::query()->get()->all();
         $friends = Friends::query()->where(['user_1','user_2'],'OR',[$this->userId,$this->userId])->get()->all();
-//        foreach($friends as $friend) {
-//            if($friend['user_1'] !== $this->userId || $friend['user_2'] ==! $this->userId) {
-//                print_r($friend['user_1']);
-//            }
-//        }
-//        dd($friend);
-        $avatar = Images::query()->where('is_avatar' ,'!=',null)->get()->all();
-        $sentRequest = FriendPivot::query()->where('id_from','=',$this->userId)->get()->all();
-       echo view('users.index','Users',['users' => $users,'avatar' => $avatar,'sentRequest' => $sentRequest]);
+        if(!empty($users)) {
+
+            if(!empty($friends)) {
+                foreach($friends as $key => $friend) {
+                    list($user_1,$user_2) = [$friend['user_1'],$friend['user_2']];
+                    $friendsId[$key] = ($user_1 !== $this->userId) ? $user_1 : $user_2;
+                }
+            }
+
+            $avatar = Images::query()->where('is_avatar' ,'!=',null)->get()->all();
+            $sentRequest = FriendPivot::query()->where('id_from','=',$this->userId)->get()->all();
+            echo view('users.index','Users',['users' => $users,'friendsId' => $friendsId,'avatar' => $avatar,'sentRequest' => $sentRequest]);
+        }else {
+            echo view('layout.empty','Empty',['message' => 'Not Users']);
+            return false;
+        }
     }
 
     public function friendRequest($id) {
@@ -66,7 +74,7 @@ class UserController
          if(preg_match("/(cancel)/",$answer)) {
              $id_from = explode(':',$answer)[1];
              FriendPivot::query()->where(['id_from','id_to'],'AND',[$id_from,$this->userId])->delete();
-             json_response(['delete' => 'element']);
+             json_response(['delete' => 'requestBlock']);
          }
 
          $id_from = $answer;
@@ -82,7 +90,7 @@ class UserController
                      $this->userId,
                      $id_from
                  ]);
-             json_response(['message' => 'You are friends','delete' => 'delete']);
+             json_response(['message' => 'You are friends','delete' => 'requestBlock']);
          }
 
      }
@@ -122,8 +130,8 @@ class UserController
                 if(($friend['user_1'] === $id && $friend['user_2'] === $this->userId) || ($friend['user_1'] === $this->userId && $friend['user_2'] === $id)) {
                     $user_1 = $friend['user_1'];
                     $user_2 = $friend['user_2'];
-                    Friends::query()->where('user_1','=',$user_1)->delete();
-                    json_response(['message' => 'Deleted']);
+                    Friends::query()->where(['user_1','user_2'],'AND',[$user_1,$user_2])->delete();
+                    json_response(['message' => 'Deleted','delete' => 'item']);
                 }
             }
         }

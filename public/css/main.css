@@ -105,10 +105,14 @@ a:hover {
     height:100%;
     object-fit:cover;
 }
-/*FOR FRIENDS*/
-.friendInfo {
-
+/*FOR PAGE NOT FOUND*/
+#notFound {
+    width:100%;
+    height:743px;
+    background-image:url('../images/notFound.png');
+    background-size: cover;
 }
+
 
 /*NOTIFICATION*/
 
@@ -123,6 +127,11 @@ a:hover {
     font-size: 12px;
     background: red;
     color:#fff;
+}
+
+/*FOR USER EMAIL DASHBOARD*/
+.email {
+    margin-top:11px;
 }
 
 /*FOR FOOTER*/

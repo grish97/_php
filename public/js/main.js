@@ -1,32 +1,35 @@
-class Data
-{
+class Data {
     constructor() {
         this.files = [];
         this.iterator = 0;
         this.tableImage = [];
     }
 
-    conditions () {
+    postForProfile () {
+        let block = ``
+    }
+
+    conditions() {
         //REQUEST ICON
         let requestCount = $(`.notice`);
-        if(!requestCount.text()) requestCount.addClass(`d-none`);
+        if (!requestCount.text()) requestCount.addClass(`d-none`);
 
         //FRIENDS REQUEST BUTTON TEXT
         let requestButton = $(`.request`),
             length = requestButton.length;
-        if(length !== 0) {
-            for(let i = 0; i < length;i++) {
-               if(requestButton.eq(i).text() === `Sent`) requestButton.eq(i).removeAttr('data-action').attr(`disabled`,true);
+        if (length !== 0) {
+            for (let i = 0; i < length; i++) {
+                if (requestButton.eq(i).text() === `Sent`) requestButton.eq(i).removeAttr('data-action').attr(`disabled`, true);
             }
         }
     }
 
-    readFile (files)  {
+    readFile(files) {
         if (files) {
-            $.each(files, (key,value) => {
+            $.each(files, (key, value) => {
                 this.files.push(value);
                 let reader = new FileReader();
-                reader.onload = function() {
+                reader.onload = function () {
                     data.showImage(reader.result);
                 };
                 reader.readAsDataURL(value);
@@ -34,119 +37,118 @@ class Data
         }
     }
 
-    uploadData (form,params)  {
+    uploadData(form, params) {
         let formData = new FormData(form);
 
         let images = data.files.filter((el) => el);
         formData.delete('file[]');
 
-        $.each(images, (key,val) => {
-            formData.append('file[]',val);
+        $.each(images, (key, val) => {
+            formData.append('file[]', val);
         });
 
-        $.each(data.tableImage,(key,image) => {
-            formData.append('base_img[]',image);
+        $.each(data.tableImage, (key, image) => {
+            formData.append('base_img[]', image);
         });
 
 
         $.ajax({
-            url : params,
-            data : formData,
-            type : 'post',
-            success : (data) => {
-                if(data) {
-                    data  = JSON.parse(data);
-                if(data['error']) {
-                    this.generateError(data['error']);
-                    return false;
-                }else if (data['warning']) {
-                    toastr.warning(data['warning']);
-                    return false;
-                }else if(data['message']) {
-                    toastr.info(data['message']);
-                    return true;
-                }else if(data['link']) window.location.href = `http://mvc.loc/${data['link']}`;
+            url: params,
+            data: formData,
+            type: 'post',
+            success: (_data) => {
+                if (_data) {
+                    _data = JSON.parse(_data);
+                    if (_data['error']) {
+                        this.generateError(_data['error']);
+                        return false;
+                    } else if (_data['warning']) {
+                        toastr.warning(_data['warning']);
+                        return false;
+                    } else if (_data['message']) {
+                        toastr.info(_data['message']);
+                        return true;
+                    } else if (_data['link']) window.location.href = `http://mvc.loc/${_data['link']}`;
 
-            }
+                }
             },
-            contentType : false,
-            processData : false,
+            contentType: false,
+            processData: false,
         });
 
     }
 
-    showImage  (img)  {
+    showImage(img) {
         let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${this.iterator++}">
                             <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
                             <img src="${img}" alt="Product Photo"> 
                         </div>`;
-    $(`.file`).after(imgBlock);
+        $(`.file`).after(imgBlock);
     }
 
-    generateError (errors)  {
+    generateError(errors) {
         toastr.error('Fix Errors');
-        $.each(errors,(field,error) => {
+        $.each(errors, (field, error) => {
             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
-        $(`#${field}`).after(errorBlock);
+            $(`#${field}`).after(errorBlock);
         });
     }
 
-    deleteImage (elem)   {
+    deleteImage(elem) {
         let elemId = elem.attr('data-id'),
             images = this.files,
             _tableImage = elem.closest(`.store_img`).attr(`data-name`);
 
-        if(_tableImage) {
-           this.tableImage.push(_tableImage);
-        }else delete images[elemId];
+        if (_tableImage) {
+            this.tableImage.push(_tableImage);
+        } else delete images[elemId];
 
         elem.remove();
-        if(!images.filter((el) => el).length) $(`[type=file]`).val('');
+        if (!images.filter((el) => el).length) $(`[type=file]`).val('');
     }
 
-    deleteProduct (url) {
+    deleteProduct(url) {
         let cond = confirm("Do you want to delete this product?");
 
-        if(cond) {
+        if (cond) {
             $.ajax({
-                url : url,
-                async : false,
-                success : (data) => {
+                url: url,
+                async: false,
+                success: (data) => {
                     data = JSON.parse(data);
                     window.location.href = `http://mvc.loc/${data['link']}`;
                 },
-                error : (err) => {
+                error: (err) => {
                     console.error(err);
                 }
             });
         }
     }
 
-    request (url,elem) {
+    request(url, elem) {
         $.ajax({
-            url : url,
-            method : "post",
-            success : (_data) => {
-                if(!_data) return false;
+            url: url,
+            method: "post",
+            success: (_data) => {
+                if (!_data) return false;
                 _data = JSON.parse(_data);
-                if(_data['message']) toastr.success(_data['message']);
-                if(_data['delete']) data.deleteElem(elem);
+                if (_data['message']) toastr.success(_data['message']);
+                if (_data['delete']) {
+                    elem = elem.closest(`.${_data['delete']}`);
+                    elem.remove();
+                }
             },
-            error : (err) => {
+            error: (err) => {
                 console.error(err);
             }
         });
     }
 
-    deleteElem (elem) {
-       elem = elem.closest('.requestBlock');
-       elem.remove();
-    }
-    
 }
 
 let data = new Data();
 data.conditions();
+data.postForProfile();
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 if(fileInput) {
@@ -184,29 +186,6 @@ $(document).on('click','.request',(e) => {
     elem.attr('disabled',true);
     data.request(action,elem);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

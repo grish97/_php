@@ -86,17 +86,34 @@ function hasRequest () {
      return $userController->hasRequest();
 }
 
-function hasSentRequest( $sentRequest,$userId) {
+function roleButton($sentRequest,$userId,$friendsId) {
+    $buttonText = 'Friends';
+    $action = "data-action=friendRequest?id=$userId";
+    $request = 'request';
+    $btn_color = 'btn-info';
     if(!empty($sentRequest)) {
         foreach($sentRequest as $val) {
             if($val['id_to'] == $userId) {
-                return 'Sent';
+                $buttonText =  'Sent';
+                $action = '';
+                $request = '';
+                $btn_color = 'btn-light';
             }
-
+        }
+    }
+    if (!empty($friendsId)) {
+        foreach($friendsId as $id) {
+            if($id === $userId) {
+                $buttonText =  '<i class="far fa-check-circle"></i> Friends';
+                $action = '';
+                $request = '';
+                $btn_color = 'btn-light';
+            }
         }
     }
 
-    return 'Friends';
+    $button = "<button class='btn $btn_color float-right $request'  $action>$buttonText</button>";
+    return $button;
 }
 
 function str_trim ($string) {

@@ -18,7 +18,7 @@ Class HomeController
 
     public function profile() {
         $avatar = Images::query()->where('is_avatar','=',$this->userId)->get()->all();
-        $avatar = image($avatar,'avatar.png');
+        $avatar = image($avatar,'avatar.jpg');
         echo view('home.profile','MY Profile',['avatar' => $avatar]);
     }
 

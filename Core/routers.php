@@ -30,3 +30,4 @@ return [
     'requestAnswer?' => 'user/requestAnswer',
     'deleteFriend?'  => 'user/deleteFriend',
 ];
+
