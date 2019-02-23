@@ -34,11 +34,13 @@ class AuthController
                 ->where('email','=',$email)
                 ->get()->first();
 
-        if (!empty($user) && $user['password'] === $password) {
+        if (!empty($user) && $user['password'] === $password && $user['verification_token'] == null) {
             //Auth SET COOKIE
             setcookie('auth_user_id',$user['id']);
             $_SESSION['userData'] = $user;
             json_response(['link' => 'profile']);
+        }elseif (isset($user['verification_token']) && $user['verification_token'] != null) {
+            json_response(['message' => 'Your account is not verified']);
         }else json_response(['message' => 'Wrong Email and Password']);
     }
 
@@ -111,7 +113,12 @@ class AuthController
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
-        json_response(['message' => 'Confirmation letter has been successfully sent']);
+        json_response(['link' => 'v-link']);
+        return true;
+    }
+
+    public function verify_link() {
+        echo view('page.verify_link','Verification');
     }
 
     public function verify($token) {
@@ -120,8 +127,7 @@ class AuthController
         if(!empty($user_token)) {
             Users::query()->where('verification_token', '=', $token)
                     ->update([
-                        'verification_token' => null,
-                        'email_verified_at' => Carbon::now()
+                        'verification_token' => null
                     ]);
            redirect('login');
         }else {

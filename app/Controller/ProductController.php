@@ -152,7 +152,7 @@ class ProductController
             json_response(['warning' => 'Warning']);
             return false;
         }
-        json_response(['link' => 'product?product=my']);
+        json_response(['link' => 'product/my']);
     }
 
     public function edit($id) {

@@ -21,8 +21,8 @@
 
             <?php if(userdata('id')  === $product['creator_id']) : ?>
                 <div class="d-inline-block mb-5 pl-4">
-                    <a href="edit?id=<?= $product['id'] ?>" class="btn text-success edit"><i class="far fa-edit"></i></a>
-                    <a role="button" data-action="delete?id=<?= $product['id'] ?>" class="btn text-danger delete"><i class="far fa-trash-alt"></i></a>
+                    <a href="edit/<?= $product['id'] ?>" class="btn text-success edit"><i class="far fa-edit"></i></a>
+                    <a role="button" data-action="delete/<?= $product['id'] ?>" class="btn text-danger delete"><i class="far fa-trash-alt"></i></a>
                 </div>
             <?php endif ?>
     </div>

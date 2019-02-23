@@ -10,11 +10,9 @@
                     <div class="avatar mx-auto mt-3 mb-4">
                         <img src="/public/storage/avatar/<?=$avatar[0]?>" class="w3-circle avatar" alt="Avatar">
                     </div>
-                    <p></p><?= userData('name') . ' ' . userData('last_name')?></p>
                     <hr>
-                    <p><i class="fas fa-pen fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-                    <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-                    <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+                    <p><i class="fas fa-user-tie fa-fw w3-margin-right w3-text-theme"></i> <?= userData('name') . ' ' . userData('last_name')?></p>
+                    <p><a href="edit-prof"><i class="fas fa-pen fa-fw w3-margin-right w3-text-theme"></i> Edit Profile</a></p>
                 </div>
             </div>
             <br>
@@ -22,27 +20,20 @@
             <!-- Accordion -->
             <div class="w3-card w3-round">
                 <div class="w3-white">
-                    <a href='friends' onclick="myFunction('Demo1')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Friends</a>
+                    <a href='friends' class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Friends</a>
                     <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>Post</button>
                     <div id="Demo2" class="w3-hide w3-container">
                         <ul class="navbar-nav ml-3">
                             <li class="nav-item">
-                                <a href="product?product=my" class="nav-link">My Post</a>
+                                <a href="product/my" class="nav-link">My Product</a>
                             </li>
                             <li class="nav-item">
-                                <a href="create-product" class="nav-link">Create Post</a>
+                                <a href="create-product" class="nav-link">Create Product</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-
-<!--        <section id="news" class="ml-5">-->
-<!--            <div class="item">-->
-<!--                <img src="/public/images/1.jpg" alt="News Image">-->
-<!--                <p class="text">Lorem ipsum dolor sit amet</p>-->
-<!--            </div>-->
-<!--        </section>-->
     </div>
 </div>

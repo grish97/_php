@@ -3,24 +3,28 @@
 return [
   'auth' => [
        'profile',
+       "edit-prof",
+       "update-prof",
        'logout',
        "create-product",
-       "store-product?",
-       'product?',
-       'show?',
-       'delete?',
-       'edit?' ,
+       "store-product",
+       'product',
+       'show',
+       'delete',
+       'edit' ,
        'users',
        'friends',
-       'friend?',
+       'friend',
        'notice',
        'request',
-       'deleteFriend?'
+       'deleteFriend'
   ],
   'guest' => [
       'login',
       'register',
       'store',
-      'verify?'
+      'sign_in',
+      'v-link',
+      'verify'
   ]
 ];

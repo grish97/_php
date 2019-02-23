@@ -24,7 +24,7 @@
                 <a href="<?= auth() ? 'profile' : '/'; ?>" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i><?= auth() ? 'My Profile' : 'Home'; ?></a>
                 <?php if(auth()) : ?>
                     <a href="users" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Users"><i class="fa fa-user"></i></a>
-                    <a href="product?product=all" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Product"><i class="fas fa-cart-arrow-down"></i></a>
+                    <a href="product/all" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Product"><i class="fas fa-cart-arrow-down"></i></a>
                     <a href="notice" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white position-relative" title="Notice"><i class="fas fa-bell"></i><span class="notice"><?= hasRequest()?></span> </a>
                     <div class="d-flex justify-content-end">
                         <p class="email mr-1"><?= userData('email')?></p>

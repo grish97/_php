@@ -1,7 +1,5 @@
 <?php
-
 session_start();
-
 function dd (...$args) {
      var_dump($args);
      die();
@@ -88,7 +86,7 @@ function hasRequest () {
 
 function roleButton($sentRequest,$userId,$friendsId) {
     $buttonText = 'Friends';
-    $action = "data-action=friendRequest?id=$userId";
+    $action = "data-action=friendRequest/$userId";
     $request = 'request';
     $btn_color = 'btn-info';
     if(!empty($sentRequest)) {

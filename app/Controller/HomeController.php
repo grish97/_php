@@ -1,6 +1,7 @@
 <?php
 namespace app\Controller;
 
+use app\Models\Users;
 use app\Models\Images;
 use app\Models\FriendPivot;
 
@@ -17,9 +18,11 @@ Class HomeController
     }
 
     public function profile() {
+        $user = Users::query()->where('id','=',$this->userId)->get()->first();
+        $_SESSION['userData'] = $user;
         $avatar = Images::query()->where('is_avatar','=',$this->userId)->get()->all();
         $avatar = image($avatar,'avatar.jpg');
-        echo view('home.profile','MY Profile',['avatar' => $avatar]);
+        echo view('profile.main','MY Profile',['avatar' => $avatar]);
     }
 
     public function logout() {

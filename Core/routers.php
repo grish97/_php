@@ -4,6 +4,8 @@ return [
     //HOME PAGE
     ""          => 'home/index',
     "profile"   => 'home/profile',
+    "edit-prof"   => 'user/edit',
+    "update-prof" => 'user/update',
     //LOGOUT
     'logout'    => 'home/logout',
     //LOGIN
@@ -13,21 +15,22 @@ return [
     //REGISTER
     "register"  => 'auth/register',
     "store"     => 'auth/store',
-    "verify?"   => 'auth/verify',
+    "v-link"    => 'auth/verify_link',
+    "verify"   => 'auth/verify',
     //POST CRUD
     "create-product" => 'product/create',
     "store-product?" => 'product/store',
-    'product?'       => 'product/index',
-    'show?'          => 'product/show',
-    'delete?'        => 'product/delete',
-    'edit?'          => 'product/edit',
+    'product'       => 'product/index',
+    'show'          => 'product/show',
+    'delete'        => 'product/delete',
+    'edit'          => 'product/edit',
     //USERS
     'users'          => 'user/index',
     'friends'        => 'user/friends',
-    'friend?'        => 'user/friend',
-    'friendRequest?' => 'user/friendRequest',
+    'friend'        => 'user/friend',
+    'friendRequest' => 'user/friendRequest',
     'notice'         => 'user/notice',
-    'requestAnswer?' => 'user/requestAnswer',
-    'deleteFriend?'  => 'user/deleteFriend',
+    'requestAnswer' => 'user/requestAnswer',
+    'deleteFriend'  => 'user/deleteFriend',
 ];
 

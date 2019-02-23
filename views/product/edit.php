@@ -24,6 +24,6 @@
             <label for="desc">Description</label>
             <textarea class="form-control" name="desc" id="desc" placeholder="Description"><?= $product['description'] ?></textarea>
         </div>
-        <button type="submit" class="btn btn-info mt-2" data-params="store-product?store=edit:<?= $product['id'] ?>">Update</button>
+        <button type="submit" class="btn btn-info mt-2" data-params="store-product/edit:<?= $product['id'] ?>">Update</button>
     </form>
 </div>

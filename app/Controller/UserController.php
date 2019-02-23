@@ -36,6 +36,76 @@ class UserController
         }
     }
 
+    public function edit() {
+        $user = Users::query()->where('id','=',$this->userId)->get()->first();
+        $avatar =  Images::query()->where('is_avatar','=',$this->userId)->get()->all();
+        $avatarName = [];
+        if(!empty($avatar)) {
+            foreach($avatar as $key =>  $val) {
+                $avatarName[$key] = $val['name'];
+            }
+        }
+        echo view('profile.edit','Edit Profile',['user' => $user,'avatar' => $avatarName]);
+    }
+
+    public function update() {
+        $upload_dir = base_dir('public/storage/avatar/');
+        $img_name = [];
+        unset($_SESSION['errors']);
+
+        validate($_POST,[
+            'name' => 'required|min:3|max:16',
+            'last_name' => 'required|min:3|max:16'
+        ]);
+
+        if(!empty($_SESSION['errors'])) {
+            json_response(['error' => $_SESSION['errors']]);
+            return false;
+        }
+
+        if(isset($_FILES['file'])) {
+            $file = $_FILES['file'];
+            $tmp_name = $file['tmp_name'];
+            $img_name = $file['name'];
+
+            for($i = 0; $i < count($tmp_name); $i++) {
+                move_uploaded_file($tmp_name[$i],$upload_dir . $img_name[$i]);
+            }
+        }
+
+        if(!empty($_POST['base_img'])) {
+            $deleted_img = $_POST['base_img'];
+            foreach($deleted_img as $val) {
+                Images::query()->where('name','=',$val)->delete();
+                unlink($upload_dir . $val);
+            }
+        }
+
+        $name = $_POST['name'];
+        $last_name = $_POST['last_name'];
+
+        Users::query()
+            ->update([
+                'name' => $name,
+                'last_name' => $last_name
+            ]);
+
+       if(!empty($img_name)) {
+           foreach($img_name as $val) {
+               Images::query()
+                   ->insert([
+                       'name',
+                       'is_avatar'
+                   ],[
+                       $val,
+                       $this->userId
+                   ]);
+           }
+       }
+       json_response(['link' => 'profile']);
+
+    }
+
     public function friendRequest($id) {
         $id_from = userData('id');
         $id_to = $id;
@@ -121,6 +191,29 @@ class UserController
         return false;
      }
 
+    public function friend($id) {
+        $myFriends = [];
+        $friends = Friends::query()->where(['user_1','user_2'],'OR',[$this->userId,$this->userId])->get()->all();
+        if(!empty($friends)) {
+            foreach($friends as $key => $friend) {
+                $user_1 = $friend['user_1'];
+                $user_2 = $friend['user_2'];
+                $myFriends[$key] = ($user_1 !== $this->userId) ? $user_1 : $user_2;
+            }
+        }
+        if(in_array($id,$myFriends)) {
+            $friend = Users::query()->where('id', '=', $id)->get()->first();
+            $avatar = Images::query()->where('is_avatar', '=', $id)->get()->first();
+            $avatar = !empty($avatar) ? $avatar['name'] : 'avatar.jpg';
+
+            if (!empty($friend)) {
+                $title = $friend['name'] . " " . $friend['last_name'];
+                echo view('users.friend', $title, ['friend' => $friend, 'avatar' => $avatar]);
+
+            }
+        }else redirect('users');
+    }
+
      function deleteFriend($id) {
         $friends = Friends::query()->where(['user_1','user_2'],'OR',[$this->userId,$this->userId])->get()->all();
         if(!empty($friends)) {
@@ -134,16 +227,6 @@ class UserController
                     json_response(['message' => 'Deleted','delete' => 'item']);
                 }
             }
-        }
-     }
-
-     public function friend($id) {
-        $friend = Users::query()->where('id','=',$id)->get()->first();
-        $avatar = Images::query()->where('is_avatar','=',$id)->get()->first();
-        $avatar = !empty($avatar) ? $avatar['name']  : 'avatar.jpg';
-        if(!empty($friend)) {
-            $title = $friend['name'] . " " . $friend['last_name'];
-            echo view('users.friend',$title,['friend' => $friend,'avatar' => $avatar]);
         }
      }
 

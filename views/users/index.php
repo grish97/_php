@@ -5,7 +5,7 @@
                 <div class="smallAvatar d-inline-block mr-3">
                     <img src="/public/storage/avatar/avatar.jpg" class='smallAvatar' alt="Avatar">
                 </div>
-                <a href="friend?id=<?=$user['id']?>"><span class=""><?=$user['name'] . ' ' . $user['last_name']?></span></a>
+                <a href="<?=in_array($user['id'],$friendsId) ? ('friend/'.$user['id']) : ''?>"><span class=""><?=$user['name'] . ' ' . $user['last_name']?></span></a>
                <?= roleButton($sentRequest,$user['id'],$friendsId)?>
             </div>
         <?php  endif; endforeach; endif ?>

@@ -20,23 +20,25 @@ Class Router
     {
         $uri = $_SERVER['REQUEST_URI'];
         if(!empty($uri)) {
-            return explode('/',$uri)[1];
+            $uri = array_values(array_filter(explode('/',$uri)));
+            return $uri;
         }
     }
 
     public function getRout()
     {
         $uri = $this->getURI();
-        $get = !empty(array_keys($_GET)[1]) ? (array_keys($_GET)[1] .'='. array_values($_GET)[1])  : '';
+        $params = isset($uri[1]) ? $uri[1] : '';
 
         foreach($this->routers as $key => $value) {
-            if (($key . $get) === $uri) {
+            if (($key . $params) === (empty($uri[0]) ? '' : $uri[0])) {
+                print_r(1);
                 $this->middleware($key);
                 $this->page = true;
                 $parts = explode('/',$value);
                 $controller = ucfirst($parts[0]) . 'Controller';
                 $action = $parts[1];
-                $params = isset(array_keys($_GET)[1]) ?  array_values($_GET)[1] : '';
+                $params = !empty($uri[1]) ?  $uri[1] : '';
                 $controllerFile = app_path($controller);
 
                 if(file_exists($controllerFile)) {

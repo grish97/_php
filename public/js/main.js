@@ -5,10 +5,6 @@ class Data {
         this.tableImage = [];
     }
 
-    postForProfile () {
-        let block = ``
-    }
-
     conditions() {
         //REQUEST ICON
         let requestCount = $(`.notice`);
@@ -68,8 +64,7 @@ class Data {
                     } else if (_data['message']) {
                         toastr.info(_data['message']);
                         return true;
-                    } else if (_data['link']) window.location.href = `http://mvc.loc/${_data['link']}`;
-
+                    } else if (_data['link'])  window.location.href = `http://mvc.loc/${_data['link']}`;
                 }
             },
             contentType: false,
@@ -148,7 +143,6 @@ class Data {
 
 let data = new Data();
 data.conditions();
-data.postForProfile();
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 if(fileInput) {
@@ -164,10 +158,11 @@ $(document).on('keyup','.form-control',(e) => {
 //FOR SUBMIT
 $(`.form`).on(`submit`,(e) => {
     e.preventDefault();
+    if($(e.target).find(`.btn`).hasClass(`register`)) $(e.target).find(`.btn`).attr(`disabled`,true);
     let errorBlock = $(`.errorBlock`);
     if(errorBlock) errorBlock.remove();
     let params = $(e.target).find(`button`).attr(`data-params`);
-    data.uploadData($(e.target)[0],params);
+    data.uploadData($(e.target)[0],params,e);
 });
 //DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
