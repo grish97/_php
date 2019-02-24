@@ -2,7 +2,7 @@
 
 return [
     //HOME PAGE
-    ""          => 'home/index',
+    "/"          => 'home/index',
     "profile"   => 'home/profile',
     "edit-prof"   => 'user/edit',
     "update-prof" => 'user/update',
@@ -19,7 +19,7 @@ return [
     "verify"   => 'auth/verify',
     //POST CRUD
     "create-product" => 'product/create',
-    "store-product?" => 'product/store',
+    "store-product" => 'product/store',
     'product'       => 'product/index',
     'show'          => 'product/show',
     'delete'        => 'product/delete',
