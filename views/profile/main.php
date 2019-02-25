@@ -1,9 +1,9 @@
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+<div class="container mt-5">
     <!-- The Grid -->
     <div class="row mb-5">
         <!-- Left Column -->
-        <div class="w3-col m3">
+        <div class="w3-col m3 mr-5">
             <!-- Profile -->
             <div class="w3-card w3-round w3-white">
                 <div class="w3-container">
@@ -35,12 +35,22 @@
                 </div>
             </div>
         </div>
-        <div class="w-50">
+        <div class="col-8">
             <!--Middle Column -->
-            <div class="ml-5 w3-white w3-round"><br>
-                <!--                <img src="/w3images/avatar5.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">-->
-                <!--                <span class="w3-right w3-opacity">16 min</span>-->
-                <h4>John Doe</h4><br>
+            <div class="bg-white post">
+                <img src="/public/images/5.jpg" alt="POST Image" >
+                <hr class="w3-clear">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div class="bg-white post_2 mt-4">
+                <img src="/public/images/6.jpg" alt="POST Image">
+                <img src="/public/images/2.jpg" alt="POST Image">
+                <hr class="w3-clear">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            </div>
+            <div class="bg-white post_2 mt-4">
+                <img src="/public/images/1.jpg" alt="POST Image">
+                <img src="/public/images/3.jpg" alt="POST Image">
                 <hr class="w3-clear">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             </div>
