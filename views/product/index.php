@@ -1,16 +1,11 @@
 
-<a href="create-product" class="btn btn-primary float-right mt-3 mr-3"><i class="fas fa-plus-circle"></i> Create</a>
+<a href="/create-product" class="btn btn-primary float-right mt-3 mr-3"><i class="fas fa-plus-circle"></i> Create</a>
 <div class="container mt-5">
     <div class="card-columns">
         <?php foreach($product as $key => $value) : ?>
-            <div class="card product shadow">
-                <a href="show/<?= $value['id']?>" class="show_prod"><i class="far fa-eye"></i></a>
-                    <?php if(!empty($image)) : foreach($image as $img) : if($value['id'] == $img['product_id']) : ?>
-                            <img src='/public/storage/products/<?=$img['name']?>' alt="Product Photo">
-                        <?php break; ?>
-                    <?php endif; endforeach; else : ?>
-                        <img src="/public/storage/products/default.png" alt="Product Default Image">
-                    <?php endif; ?>
+            <div class="card product shadow mb-5 defaultImg">
+                <a href="/show/<?= $value['id']?>" class="show_prod"><i class="far fa-eye"></i></a>
+                <?= generateImage($image,$value['id'])?>
                 <div class="card-body">
                     <h5 class="card-title"><?= $value['name'] ?></h5>
                     <p class="card-text"><?= $value['description'] ?></p>

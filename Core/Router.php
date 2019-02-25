@@ -31,7 +31,7 @@ Class Router
         $params = empty($uri[2]) ? '' : $uri[2];
 
         foreach($this->routers as $key => $value) {
-            if (($key . (empty($params) ? '' : ('/'.$params)) === $this->getURI())) {
+            if ($key === (!empty($uri[1]) ? $uri[1] : '/')) {
                 $this->middleware($key);
                 $this->page = true;
                 $parts = explode('/',$value);

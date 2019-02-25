@@ -16,7 +16,7 @@ class UserController
     }
     public function index() {
         $friendsId = [];
-        $users = Users::query()->get()->all();
+        $users = Users::query()->where('id','!=',$this->userId)->get()->all();
         $friends = Friends::query()->where(['user_1','user_2'],'OR',[$this->userId,$this->userId])->get()->all();
         if(!empty($users)) {
 
@@ -102,7 +102,7 @@ class UserController
                    ]);
            }
        }
-       json_response(['link' => 'profile']);
+       json_response(['link' => '/profile']);
 
     }
 
@@ -204,14 +204,14 @@ class UserController
         if(in_array($id,$myFriends)) {
             $friend = Users::query()->where('id', '=', $id)->get()->first();
             $avatar = Images::query()->where('is_avatar', '=', $id)->get()->first();
-            $avatar = !empty($avatar) ? $avatar['name'] : 'avatar.jpg';
+            $avatar = !empty($avatar) ? $avatar['name'] : 'avatar.png';
 
             if (!empty($friend)) {
                 $title = $friend['name'] . " " . $friend['last_name'];
                 echo view('users.friend', $title, ['friend' => $friend, 'avatar' => $avatar]);
 
             }
-        }else redirect('users');
+        }else redirect('/users');
     }
 
      function deleteFriend($id) {

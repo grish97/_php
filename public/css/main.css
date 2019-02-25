@@ -32,8 +32,8 @@ a:hover {
     right: 10px;
     top: 3px;
     font-size: 24px;
-    opacity:0.7;
-    color: #26363E;
+    opacity:0.9;
+    color:cadetblue;
     transition: 0.3s ease;
 }
 

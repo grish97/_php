@@ -10,6 +10,6 @@
             <input type="password" class="form-control rounded-0" name="password" id="password" placeholder="Password">
         </div>
 
-        <button type="submit" class="btn btn-info mt-2" data-params="sign_in">SignIn</button>
+        <button type="submit" class="btn btn-info mt-2" data-params="/sign_in">SignIn</button>
     </form>
 </div>

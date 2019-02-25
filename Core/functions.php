@@ -79,6 +79,18 @@ function image($image,$default) {
     return $image_arr;
 }
 
+function generateImage($image,$id) {
+    if(!empty($image)) {
+        foreach($image as $img) {
+            if($img['product_id'] == $id) {
+                $src = $img['name'];
+                return "<img src='/public/storage/products/$src' alt='Product Image'>";
+            }
+        }
+    }
+
+}
+
 function hasRequest () {
     $userController = new app\Controller\UserController();
      return $userController->hasRequest();
@@ -86,7 +98,7 @@ function hasRequest () {
 
 function roleButton($sentRequest,$userId,$friendsId) {
     $buttonText = 'Friends';
-    $action = "data-action=friendRequest/$userId";
+    $action = "/data-action=friendRequest/$userId";
     $request = 'request';
     $btn_color = 'btn-info';
     if(!empty($sentRequest)) {
@@ -130,18 +142,6 @@ function str_random ($length) {
     return $randomString;
 }
 
-function verify_token($action) {
-    $token = $_SESSION['verification_token'];
-    if($token) {
-        if($action === 'get') {
-            return $token;
-        }elseif ($action === 'delete') {
-            unset($token);
-        }
-    }else {
-        return false;
-    }
-}
 
 function json_response(array $data) {
     echo json_encode($data);

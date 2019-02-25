@@ -24,6 +24,6 @@
             <label for="password">Confirm Password</label>
             <input type="password" class="form-control rounded-0" name="conf_password" id="conf_password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-success mt-2 register" data-params="store">Register</button>
+        <button type="submit" class="btn btn-success mt-2 register" data-params="/store">Register</button>
         </form>
 </div>

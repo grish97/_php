@@ -16,8 +16,8 @@ class ProductController
     }
 
     public function index($role) {
+        $creator_id = userData('id');
         if ($role === 'my') {
-            $creator_id = userData('id');
             $product = Products::query()->where('creator_id', '=',$creator_id)->get()->all();
             $image = Images::query()->where('creator_id','=',$creator_id)->get()->all();
         }elseif ($role === 'all') {
@@ -115,7 +115,6 @@ class ProductController
                     $fileDirectory = './public/storage/products/';
                     foreach($deleted_img as $val) {
                         Images::query()->where('name','=',$val)->delete();
-
                         unlink($fileDirectory . $val);
                     }
                 }
@@ -152,7 +151,7 @@ class ProductController
             json_response(['warning' => 'Warning']);
             return false;
         }
-        json_response(['link' => 'product/my']);
+        json_response(['link' => '/product/my']);
     }
 
     public function edit($id) {
@@ -161,7 +160,7 @@ class ProductController
                     ->get()->first();
         $image = Images::query()->where('product_id','=',$id)->get()->all();
         if ($product['creator_id'] !== userData('id')) {
-            redirect('profile');
+            redirect('/profile');
             return false;
         }
         echo view('product.edit',"Edit Product",['product' => $product,'image' => $image]);
@@ -177,15 +176,24 @@ class ProductController
     }
 
     public function delete($id) {
+        $userId = userData('id');
+        $direct = base_dir('public/storage/products/');
         $product = Products::query()
                 ->where('id','=',$id)
                 ->get()->first();
 
-        if($product['creator_id'] === userData('id')) {
+        if(isset($product) && $product['creator_id'] === $userId) {
+            $images = Images::query()->where('product_id','=',$id)->get()->all();
+
+            if(!empty($images)) {
+                foreach($images as $val) {
+                    unlink($direct . $val['name']);
+                }
+            }
             Products::query()
                     ->where('id','=',$id)->delete();
         }
-        json_response(['link' => 'profile']);
+        json_response(['link' => '/profile']);
     }
 
 

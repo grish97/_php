@@ -21,7 +21,7 @@ Class HomeController
         $user = Users::query()->where('id','=',$this->userId)->get()->first();
         $_SESSION['userData'] = $user;
         $avatar = Images::query()->where('is_avatar','=',$this->userId)->get()->all();
-        $avatar = image($avatar,'avatar.jpg');
+        $avatar = image($avatar,'avatar.png');
         echo view('profile.main','MY Profile',['avatar' => $avatar]);
     }
 
@@ -29,6 +29,6 @@ Class HomeController
         unset($_COOKIE['auth_user_id']);
         unset($_SESSION['userDate']);
         setcookie('auth_user_id','',time()- 3600);
-        redirect('login');
+        redirect('/login');
     }
 }

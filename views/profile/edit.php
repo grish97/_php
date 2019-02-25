@@ -18,6 +18,6 @@
             <label for="last_name">Last Name</label>
             <input type="text" class="form-control" name="last_name" id="last_name" value="<?= $user['last_name'] ?>">
         </div>
-        <button type="submit" class="btn btn-info mt-2" data-params="update-prof">Update</button>
+        <button type="submit" class="btn btn-info mt-2" data-params="/update-prof">Update</button>
     </form>
 </div>

@@ -16,7 +16,6 @@ class Mail
         $this->mail = new PHPMailer(true);
         $this->to = $to;
         $this->subject = $subject;
-        $this->message = $this->generateHtmlForMessage($message);
         $this->token = $token;
         $this->_send();
     }
@@ -38,7 +37,7 @@ class Mail
 //            $this->mail->isHTML(true);
             $this->mail->Subject = "$this->subject";
             $this->mail->Body = "<p>Please verify your account <a href='http://mvc.loc/verify?token=".$this->token."'>Here</a></p>
-                                 <p>Or copy link <a href='http://mvc.loc/verify?token=".$this->token."'>'http://mvc.loc/verify?token='" . $this->token . "'</a></p>";
+                                 <p>Or copy link <a href='http://mvc.loc/verify/".$this->token."'>'http://mvc.loc/verify/'" . $this->token . "'</a></p>";
             $this->mail->AltBody = 'This is a Alt Body';
 
             $this->mail->send();
@@ -46,11 +45,5 @@ class Mail
         }catch(Exception $e) {
             echo 'Message could not  be  sent. Mailer error ' . $this->mail->ErrorInfo;
         }
-    }
-
-    private function generateHtmlForMessage($message) {
-        $path = views_path($message);
-
-        return file_get_contents($path);
     }
 }

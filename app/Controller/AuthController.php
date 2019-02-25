@@ -38,7 +38,7 @@ class AuthController
             //Auth SET COOKIE
             setcookie('auth_user_id',$user['id']);
             $_SESSION['userData'] = $user;
-            json_response(['link' => 'profile']);
+            json_response(['link' => '/profile']);
         }elseif (isset($user['verification_token']) && $user['verification_token'] != null) {
             json_response(['message' => 'Your account is not verified']);
         }else json_response(['message' => 'Wrong Email and Password']);
@@ -113,7 +113,7 @@ class AuthController
         //SEND VERIFY MAIL
         new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
-        json_response(['link' => 'v-link']);
+        json_response(['link' => '/v-link']);
         return true;
     }
 
@@ -129,7 +129,7 @@ class AuthController
                     ->update([
                         'verification_token' => null
                     ]);
-           redirect('login');
+           redirect('/login');
         }else {
            echo "<h2 class='text-font-weight'>404 Page not found</h2>
                   <a href='http://mvc.loc/' class='btn'>Home</a>";

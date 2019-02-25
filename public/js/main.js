@@ -20,6 +20,20 @@ class Data {
         }
     }
 
+    generateDefault() {
+        let elem = $('.defaultImg');
+        if(elem.length) {
+            $.each(elem,(key,val) => {
+                if($(val).find('img').length === 0) {
+                    console.log(val);
+                    let imgElem = `<img src="/public/storage/products/default.png" alt="Default Image">`;
+                    elem.eq(key).prepend(imgElem);
+                    return true;
+                }
+            })
+        }
+    }
+
     readFile(files) {
         if (files) {
             $.each(files, (key, value) => {
@@ -64,7 +78,7 @@ class Data {
                     } else if (_data['message']) {
                         toastr.info(_data['message']);
                         return true;
-                    } else if (_data['link'])  window.location.href = `http://mvc.loc/${_data['link']}`;
+                    } else if (_data['link'])  window.location.href = `http://mvc.loc${_data['link']}`;
                 }
             },
             contentType: false,
@@ -111,7 +125,7 @@ class Data {
                 async: false,
                 success: (data) => {
                     data = JSON.parse(data);
-                    window.location.href = `http://mvc.loc/${data['link']}`;
+                    window.location.href = `http://mvc.loc${data['link']}`;
                 },
                 error: (err) => {
                     console.error(err);
@@ -143,6 +157,7 @@ class Data {
 
 let data = new Data();
 data.conditions();
+data.generateDefault();
 //CHANGE INPUT FILE
 let fileInput = document.getElementById('file');
 if(fileInput) {
@@ -158,7 +173,6 @@ $(document).on('keyup','.form-control',(e) => {
 //FOR SUBMIT
 $(`.form`).on(`submit`,(e) => {
     e.preventDefault();
-    if($(e.target).find(`.btn`).hasClass(`register`)) $(e.target).find(`.btn`).attr(`disabled`,true);
     let errorBlock = $(`.errorBlock`);
     if(errorBlock) errorBlock.remove();
     let params = $(e.target).find(`button`).attr(`data-params`);

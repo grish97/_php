@@ -20,12 +20,12 @@
             <br>
         </div>
 
-        <div class="w-50 ml-5">
+        <div class="w-50">
             <!--Middle Column -->
-            <div class="w3-white w3-round"><br>
+            <div class="ml-5 w3-white w3-round"><br>
                 <!--                <img src="/w3images/avatar5.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">-->
                 <!--                <span class="w3-right w3-opacity">16 min</span>-->
-                <h4>Jane Doe</h4><br>
+                <h4><?= $friend['name'] . ' ' . $friend['last_name']?></h4><br>
                 <hr class="w3-clear">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             </div>
