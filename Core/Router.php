@@ -42,7 +42,13 @@ Class Router
                 if(file_exists($controllerFile)) {
                     $class_name = "\\app\\Controller\\{$controller}";
                     $object = new $class_name();
-                    $result = empty($params) ? $object->$action() : $object->$action($params);
+
+                    try{
+                        $result = empty($params) ? $object->$action() : $object->$action($params);
+                    }catch(\Error $e) {
+                        redirect('/');
+                    }
+
                     if ($result !== null) return false;
                 }
             }
