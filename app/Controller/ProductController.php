@@ -44,7 +44,7 @@ class ProductController
         unset($_SESSION['errors']);
 
         validate($_POST,[
-            'name' => 'required|min:3|max:50',
+            'name' => 'required|string|min:3|max:50',
             'desc' => 'required|min:3|max:1000',
             'price' => 'required|number',
         ]);
@@ -170,6 +170,8 @@ class ProductController
         $product = Products::query()
                     ->where('id','=',$id)
                     ->get()->first();
+        if(empty($product)) redirect('/product/all');
+
         $image = Images::query()->where('product_id','=',$id)->get()->all();
 
         echo view('product.show','Product', ['product' => $product,'image' => $image]);

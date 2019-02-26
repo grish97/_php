@@ -54,8 +54,8 @@ class UserController
         unset($_SESSION['errors']);
 
         validate($_POST,[
-            'name' => 'required|min:3|max:16',
-            'last_name' => 'required|min:3|max:16'
+            'name' => 'required|string|min:3|max:16',
+            'last_name' => 'required|string|min:3|max:16'
         ]);
 
         if(!empty($_SESSION['errors'])) {
@@ -84,7 +84,7 @@ class UserController
         $name = $_POST['name'];
         $last_name = $_POST['last_name'];
 
-        Users::query()
+        Users::query()->where('id','=',$this->userId)
             ->update([
                 'name' => $name,
                 'last_name' => $last_name
@@ -107,8 +107,23 @@ class UserController
     }
 
     public function friendRequest($id) {
+        $request = FriendPivot::query()->get()->all();
         $id_from = userData('id');
         $id_to = $id;
+
+        if(!empty($request)) {
+            foreach($request as $val) {
+              $user_1 = $val['id_to'];
+              $user_2 = $val['id_from'];
+
+              if(($user_1 == $id && $user_2 == $this->userId)  || ($user_1 == $this->userId && $user_2 == $id) && ($user_1 == $id && $user_2 == $id)) {
+                  redirect('/users');
+                  return false;
+              }
+            }
+        }
+
+
         if($id_from) {
             FriendPivot::query()
                 ->insert([

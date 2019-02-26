@@ -47,7 +47,7 @@ class Data {
         }
     }
 
-    uploadData(form, params) {
+    uploadData(form, params,elem) {
         let formData = new FormData(form);
 
         let images = data.files.filter((el) => el);
@@ -70,7 +70,9 @@ class Data {
                 if (_data) {
                     _data = JSON.parse(_data);
                     if (_data['error']) {
+                        $(`input:password`).val('');
                         this.generateError(_data['error']);
+                        elem.find(`.register`).removeAttr(`disabled`);
                         return false;
                     } else if (_data['warning']) {
                         toastr.warning(_data['warning']);
@@ -99,6 +101,11 @@ class Data {
         toastr.error('Fix Errors');
         $.each(errors, (field, error) => {
             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
+            if(field === 'image') {
+                let input = $(`input:file`);
+                input.val(``);
+               $(`.store_img`).remove();
+            }
             $(`#${field}`).after(errorBlock);
         });
     }
@@ -173,10 +180,12 @@ $(document).on('keyup','.form-control',(e) => {
 //FOR SUBMIT
 $(`.form`).on(`submit`,(e) => {
     e.preventDefault();
+    let registerBtn = $(e.target);
+    registerBtn.find(`.register`).attr(`disabled`,true);
     let errorBlock = $(`.errorBlock`);
     if(errorBlock) errorBlock.remove();
     let params = $(e.target).find(`button`).attr(`data-params`);
-    data.uploadData($(e.target)[0],params,e);
+    data.uploadData($(e.target)[0],params,registerBtn);
 });
 //DELETE IMAGE
 $(document).on('click','.deleteImage', function ()  {
@@ -193,6 +202,7 @@ $(document).on('click','.request',(e) => {
     let elem  = $(e.target),
         action = elem.attr('data-action');
     elem.attr('disabled',true);
+    elem.removeAttr(`data-action`);
     data.request(action,elem);
 });
 

@@ -31,6 +31,8 @@ class Validator
 
     private function validateField($field,$rule,$arg) {
         $_data = $this->data;
+        $_data[$field] = isset($_data[$field]) ? trim($_data[$field])  : '';
+
         switch($rule) {
             case 'required':
                 if(empty($_data[$field])) $this->errorMessage($field,$rule);
@@ -42,21 +44,42 @@ class Validator
                 if(strlen($_data[$field]) > $arg) $this->errorMessage($field,$rule,$arg);
             break;
             case 'email':
-                $pattern = "/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/";
+                $pattern = "/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/";
                 $match = preg_match($pattern,$_data[$field]);
                 if(!$match) {
                     $this->errorMessage($field,$rule);
                 }
             break;
             case 'number' :
-                if(is_nan(isset($_data[$field]))) $this->errorMessage($field,$rule);
+                $pattern = "/^[0-9]*$/";
+                $match = preg_match($pattern,$_data[$field]);
+                if(!$match) {
+                    $this->errorMessage($field,$rule);
+                }
             break;
+            case 'string' :
+                $pattern = '/^(([A-za-z]+[\s]{1}[A-za-z]+)|([A-Za-z]+))$/';
+                $match = preg_match($pattern,$_data[$field]);
+                if(!$match) $this->errorMessage($field,$rule);
+                break;
             case 'confirmed':
                 if ($_data[$field] !== $_data['conf_' . $field]) $this->errorMessage($field,$rule);
             break;
+            case 'image' :
+                $imgType = ['jpg','png','jpeg'];
+               if(!empty($_FILES)) {
+                   $fileType = $_FILES['file']['type'];
+                   foreach($fileType as $val) {
+                       $parts = explode('/',$val);
+                       if(!in_array($parts[1],$imgType)) {
+                           $this->errorMessage($field,$rule);
+                           break;
+                       }
+                   }
+               }
+            break;
             case 'unique':
                 $parts = explode(',',$arg);
-                $table = $parts[0];
                 $column = $parts[1];
                 $email = Users::query()->where($column,'=',$_data[$field])->get()->first();
 
@@ -74,9 +97,10 @@ class Validator
            'email' => 'Email address is not valid',
            'unique' => 'This Email was registered',
            'confirmed' => 'Please confirm password',
-           'number' => "$field must be number"
+           'number' => "Field must be number",
+           'string' => "Field must be string",
+           'image'  =>  "Wrong type image",
        ];
-
        $errorMsg = $message[$rule];
        $this->addError($field,$errorMsg);
     }

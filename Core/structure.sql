@@ -16,6 +16,7 @@ CREATE TABLE products (
   price int(11) NOT NULL,
   image_name varchar(100) NOT NULL,
   updated_at datetime,
+  updated_at timestamp,
   created_at timestamp
 );
 

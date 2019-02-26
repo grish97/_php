@@ -43,7 +43,7 @@ Class Router
                     $class_name = "\\app\\Controller\\{$controller}";
                     $object = new $class_name();
                     $result = empty($params) ? $object->$action() : $object->$action($params);
-                    if ($result !== null) break;
+                    if ($result !== null) return false;
                 }
             }
 
@@ -59,13 +59,13 @@ Class Router
         foreach($this->pageCond as $key => $page) {
             if($key === 'auth' && in_array($url,$page)) {
                 if(!auth()) {
-                    redirect('login');
+                    redirect('/login');
                     return false;
                 }
                 return true;
             }elseif ($key === 'guest' && in_array($url,$page)) {
                 if(auth()){
-                    redirect('profile');
+                    redirect('/profile');
                     return false;
                 }
                 return true;

@@ -34,14 +34,22 @@ class AuthController
                 ->where('email','=',$email)
                 ->get()->first();
 
-        if (!empty($user) && $user['password'] === $password && $user['verification_token'] == null) {
-            //Auth SET COOKIE
-            setcookie('auth_user_id',$user['id']);
-            $_SESSION['userData'] = $user;
-            json_response(['link' => '/profile']);
-        }elseif (isset($user['verification_token']) && $user['verification_token'] != null) {
-            json_response(['message' => 'Your account is not verified']);
-        }else json_response(['message' => 'Wrong Email and Password']);
+        if(!empty($user)) {
+            if ($user['password'] === $password && $user['email'] === $email && $user['verification_token'] == null) {
+                //Auth SET COOKIE
+                setcookie('auth_user_id', $user['id']);
+                $_SESSION['userData'] = $user;
+                json_response(['link' => '/profile']);
+                return true;
+            } elseif ($user['verification_token'] != null && ($user['password'] === $password) && ($user['email'] === $email)) {
+                json_response(['message' => 'Your account is not verified']);
+                return false;
+            }
+            json_response(['message' => 'Wrong Email and Password']);
+            return false;
+        }
+
+        json_response(['message' => 'Wrong Email and Password']);
     }
 
     public function register() {
@@ -52,10 +60,11 @@ class AuthController
         unset($_SESSION['errors']);
 
         validate($_POST,[
-            'name' => 'required|min:3|max:20',
-            'last_name' => 'required|min:3|max:30',
+            'name' => 'required|string|min:3|max:20',
+            'last_name' => 'required|string|min:3|max:30',
             'email' => 'required|email|min:6|max:26|unique:users,email',
-            'password' => 'required|min:3|max:30|confirmed'
+            'password' => 'required|min:3|max:30|confirmed',
+            'image'    => 'image'
         ]);
 
         if (!empty($_SESSION['errors'])) {
@@ -111,7 +120,7 @@ class AuthController
         }
 
         //SEND VERIFY MAIL
-        new Mail("example@gmail.com",'Verify Account','email.registerVerify',$token);
+        new Mail("$email",'Verify Account','email.registerVerify',$token);
         //VERIFY VIEW
         json_response(['link' => '/v-link']);
         return true;
