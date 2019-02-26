@@ -1,5 +1,5 @@
-<div class="col-5 mx-auto jumbotron">
-    <h3 class="mt-3 text-center mb-3">Sign Up</h3>
+<div class="col-4 mx-auto jumbotron">
+    <h3 class="mt-3 text-center mb-5">Sign Up</h3>
     <form method="post" class="form">
         <div class="mt-3 mb-4 file">
             <input type="file" name="file[]" class="inputFile" multiple="multiple" id="file" accept="image/*">
