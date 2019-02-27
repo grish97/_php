@@ -124,7 +124,7 @@ class UserController
         }
 
 
-        if($id_from) {
+        if($id_from && ($id_from !== $this->userId)) {
             FriendPivot::query()
                 ->insert([
                     'id_from',

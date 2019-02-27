@@ -64,7 +64,6 @@ class AuthController
             'last_name' => 'required|string|min:3|max:30',
             'email' => 'required|email|min:6|max:26|unique:users,email',
             'password' => 'required|min:3|max:30|confirmed',
-            'image'    => 'image'
         ]);
 
         if (!empty($_SESSION['errors'])) {

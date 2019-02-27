@@ -25,7 +25,6 @@ class Data {
         if(elem.length) {
             $.each(elem,(key,val) => {
                 if($(val).find('img').length === 0) {
-                    console.log(val);
                     let imgElem = `<img src="/public/storage/products/default.png" alt="Default Image">`;
                     elem.eq(key).prepend(imgElem);
                     return true;
@@ -37,13 +36,15 @@ class Data {
     readFile(files) {
         if (files) {
             $.each(files, (key, value) => {
-                this.files.push(value);
-                let reader = new FileReader();
-                reader.onload = function () {
-                    data.showImage(reader.result);
-                };
-                reader.readAsDataURL(value);
+                let imageType =  value.name.split('.')[1],
+                    standartImgType = ['jpg','png','jpeg','jfif '];
+
+                if($.inArray(imageType,standartImgType) === -1) {
+                    toastr.error(`Wrong type Image <span class="font-weight-bold">.${imageType}</span>`);
+                }else this.files.push(value);
             });
+
+            if(this.files.length) data.showImage();
         }
     }
 
@@ -70,7 +71,6 @@ class Data {
                 if (_data) {
                     _data = JSON.parse(_data);
                     if (_data['error']) {
-                        $(`input:password`).val('');
                         this.generateError(_data['error']);
                         elem.find(`.register`).removeAttr(`disabled`);
                         return false;
@@ -89,23 +89,25 @@ class Data {
 
     }
 
-    showImage(img) {
-        let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${this.iterator++}">
+    showImage() {
+        let files = this.files;
+            for(let i = 0; i < files.length; i++) {
+                let reader = new FileReader();
+                reader.onload = function () {
+                    let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${i}">
                             <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
-                            <img src="${img}" alt="Product Photo"> 
+                            <img src="${reader.result}" alt="Product Photo">
                         </div>`;
-        $(`.file`).after(imgBlock);
+                    $(`.file`).after(imgBlock);
+                };
+                reader.readAsDataURL(files[i]);
+            }
     }
 
     generateError(errors) {
         toastr.error('Fix Errors');
         $.each(errors, (field, error) => {
             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
-            if(field === 'image') {
-                let input = $(`input:file`);
-                input.val(``);
-               $(`.store_img`).remove();
-            }
             $(`#${field}`).after(errorBlock);
         });
     }

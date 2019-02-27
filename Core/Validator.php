@@ -44,7 +44,7 @@ class Validator
                 if(strlen($_data[$field]) > $arg) $this->errorMessage($field,$rule,$arg);
             break;
             case 'email':
-                $pattern = "/^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/";
+                $pattern = "/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,7}|[0-9]{1,3})(\]?)$/";
                 $match = preg_match($pattern,$_data[$field]);
                 if(!$match) {
                     $this->errorMessage($field,$rule);
@@ -64,19 +64,6 @@ class Validator
                 break;
             case 'confirmed':
                 if ($_data[$field] !== $_data['conf_' . $field]) $this->errorMessage($field,$rule);
-            break;
-            case 'image' :
-                $imgType = ['jpg','png','jpeg'];
-               if(!empty($_FILES)) {
-                   $fileType = $_FILES['file']['type'];
-                   foreach($fileType as $val) {
-                       $parts = explode('/',$val);
-                       if(!in_array($parts[1],$imgType)) {
-                           $this->errorMessage($field,$rule);
-                           break;
-                       }
-                   }
-               }
             break;
             case 'unique':
                 $parts = explode(',',$arg);
@@ -99,7 +86,7 @@ class Validator
            'confirmed' => 'Please confirm password',
            'number' => "Field must be number",
            'string' => "Field must be string",
-           'image'  =>  "Wrong type image",
+
        ];
        $errorMsg = $message[$rule];
        $this->addError($field,$errorMsg);
