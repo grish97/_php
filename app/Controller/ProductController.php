@@ -106,7 +106,6 @@ class ProductController
             }
 
         }elseif ($role === 'edit') {
-            dd($_FILES);
             $product = Products::query()->where('id','=',$id)->get()->first();
 
             if (isset($product) && isset($product['creator_id']) && $product['creator_id'] === userData('id')) {
