@@ -55,7 +55,8 @@ class UserController
 
         validate($_POST,[
             'name' => 'required|string|min:3|max:16',
-            'last_name' => 'required|string|min:3|max:16'
+            'last_name' => 'required|string|min:3|max:16',
+            'image'     => 'image',
         ]);
 
         if(!empty($_SESSION['errors'])) {

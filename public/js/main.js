@@ -36,7 +36,7 @@ class Data {
     readFile(files) {
         if (files) {
             $.each(files, (key, value) => {
-                let imageType =  value.name.split('.')[1],
+                let imageType =  value.type.split('/').pop(),
                     standartImgType = ['jpg','png','jpeg','jfif '];
 
                 if($.inArray(imageType,standartImgType) === -1) {
@@ -107,6 +107,12 @@ class Data {
     generateError(errors) {
         toastr.error('Fix Errors');
         $.each(errors, (field, error) => {
+            if(field === 'image') {
+                let input = $(`input:file`);
+                input.val(``);
+                $(`.store_img`).remove();
+                toastr.error(`Wrong type image`);
+            }
             let errorBlock = `<span class="text-danger small errorBlock">${error}</span>`;
             $(`#${field}`).after(errorBlock);
         });
