@@ -2,6 +2,7 @@
     <h3 class="mt-3 text-center mb-3">Create Product</h3>
     <form method="post" enctype="multipart/form-data" class="form">
         <div class="mt-3 mb-4 file">
+            <label for="file" class="label">Choose File</label>
             <input type="file" name="file[]" class="inputFile" id="file" multiple="multiple" accept="image/jpeg">
         </div>
         <div class="form-group">

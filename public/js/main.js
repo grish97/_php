@@ -40,11 +40,19 @@ class Data {
                     standartImgType = ['jpg','png','jpeg','jfif '];
 
                 if($.inArray(imageType,standartImgType) === -1) {
-                    toastr.error(`Wrong type Image <span class="font-weight-bold">.${imageType}</span>`);
-                }else this.files.push(value);
-            });
+                    toastr.error(`Wrong type Image <span class="font-weight-bold">${imageType}</span>`);
+                }else  {
+                    let files = this.files,
+                        reader = new FileReader();
 
-            if(this.files.length) data.showImage();
+                    files.push(value);
+
+                    reader.onload = function () {
+                        data.showImage(reader.result);
+                    };
+                    reader.readAsDataURL(value);
+                }
+            });
         }
     }
 
@@ -71,6 +79,7 @@ class Data {
                 if (_data) {
                     _data = JSON.parse(_data);
                     if (_data['error']) {
+                        elem.find(`#password`).val(``);
                         this.generateError(_data['error']);
                         elem.find(`.register`).removeAttr(`disabled`);
                         return false;
@@ -89,19 +98,12 @@ class Data {
 
     }
 
-    showImage() {
-        let files = this.files;
-            for(let i = 0; i < files.length; i++) {
-                let reader = new FileReader();
-                reader.onload = function () {
-                    let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${i}">
-                            <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
-                            <img src="${reader.result}" alt="Product Photo">
-                        </div>`;
-                    $(`.file`).after(imgBlock);
-                };
-                reader.readAsDataURL(files[i]);
-            }
+    showImage(img) {
+        let imgBlock = `<div class="store_img d-inline-block mb-5"  data-id="${this.iterator++}">
+                <a role="button" class="deleteImage"><i class="fas fa-times"></i></a>
+                <img src="${img}" alt="Product Photo">
+            </div>`;
+        $(`.file`).after(imgBlock);
     }
 
     generateError(errors) {
@@ -161,6 +163,7 @@ class Data {
                     elem = elem.closest(`.${_data['delete']}`);
                     elem.remove();
                 }
+                if(_data['link']) window.location.href = `http://mvc.loc${_data['link']}`;
             },
             error: (err) => {
                 console.error(err);

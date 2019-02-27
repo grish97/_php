@@ -124,8 +124,7 @@ class UserController
             }
         }
 
-
-        if($id_from && ($id_from !== $this->userId)) {
+        if($id_from && $id_to !== $this->userId) {
             FriendPivot::query()
                 ->insert([
                     'id_from',
@@ -135,7 +134,8 @@ class UserController
                     $id_to
                 ]);
             json_response(['message' => 'Request has been successfully sent']);
-        }
+
+        }else json_response(['link' => '/users']);
     }
 
     public function notice() {

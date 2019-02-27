@@ -35,7 +35,9 @@ class Validator
 
         switch($rule) {
             case 'required':
-                if(empty($_data[$field])) $this->errorMessage($field,$rule);
+                if(empty($_data[$field])) {
+                    $this->errorMessage($field,$rule);
+                }
             break;
             case 'min':
                 if (strlen($_data[$field]) < $arg) $this->errorMessage($field,$rule,$arg);
@@ -106,6 +108,7 @@ class Validator
     }
 
     public function addError($field,$message) {
+        if(!empty($_SESSION['errors'][$field])) return false;
         $_SESSION['errors'][$field] = $message;
     }
 
